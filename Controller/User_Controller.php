@@ -1,5 +1,5 @@
 <?php
-require_once("../Model/database.php");
+require_once("../Model/User_info.php");
 
 //Query for all students 
 $results = All_Users(); 
