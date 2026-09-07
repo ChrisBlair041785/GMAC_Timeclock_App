@@ -1,9 +1,3 @@
-<?php
-require_once('../controller/Student_Controller.php');
-require_once('../controller/User_Controller.php');
-require_once('../controller/Login_Controller.php');
-require_once('../controller/Timeclock_Controller.php');
-?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,8 +8,8 @@ require_once('../controller/Timeclock_Controller.php');
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
     </head>
-<body>
-    <div class="container" style="margin-top: 30px">
+    <body>
+        <div class="container" style="margin-top: 30px">
             <header class="jumbotron text-center row"
             style="margin-bottom:2px; background: linear-gradient(white, #e68a00); padding:20px;">
             <div class="col-sm-2">
@@ -32,12 +26,12 @@ require_once('../controller/Timeclock_Controller.php');
             </ul>
         </nav>
         <div class="col-sm-8">
-            <p>Welcome to the GMAC Timekeeping system. Please use the navigation menu to access different sections of the system.</p>
+        <h2 class="text-center">Login Management</h2>
+        
         </div>
         <aside class="col-sm-2">
-            <?php include('../controller/User_Buttons.php'); ?>
+            <?php include('user_buttons.php'); ?>
         </aside>
     </div>
-</body>
-
+    </body>
 </html>
