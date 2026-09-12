@@ -30,7 +30,7 @@
         
         </div>
         <aside class="col-sm-2">
-            <?php include('user_buttons.php'); ?>
+            <?php include('../controller/user_buttons.php'); ?>
         </aside>
     </div>
     </body>

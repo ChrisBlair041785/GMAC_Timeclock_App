@@ -8,10 +8,10 @@ function All_Users() {
     return $results;
 }
 
-function Add_User($LastName, $FirstName, $AccessLevel) {
+function Add_User($LastName, $FirstName, $Email, $Password) {
     $conn = get_db_conn();
-    $query = "INSERT INTO users (LastName, FirstName, AccessLevel) 
-        VALUES ('$LastName', '$FirstName', '$AccessLevel')";
+    $query = "INSERT INTO users (LastName, FirstName, Email, Password ) 
+        VALUES ('$LastName', '$FirstName', '$Email', '$Password')";
     return mysqli_query($conn, $query);
 }
 
@@ -22,10 +22,10 @@ function Get_User_By_ID($ID) {
     return mysqli_fetch_assoc($results);
 }
 
-function Update_User($ID, $LastName, $FirstName, $AccessLevel) {
+function Update_User($ID, $LastName, $FirstName, $Email, $Password) {
     $conn = get_db_conn();
     $query = "UPDATE users SET LastName = '$LastName', FirstName = '$FirstName', 
-        AccessLevel = '$AccessLevel' WHERE ID = '$ID'";
+        Email = '$Email', Password = '$Password', WHERE ID = '$ID'";
     return mysqli_query($conn, $query);
 }
 
@@ -34,4 +34,5 @@ function Delete_User($ID) {
     $query = "DELETE FROM users WHERE ID = '$ID'";
     return mysqli_query($conn, $query);
 }
+
 ?>

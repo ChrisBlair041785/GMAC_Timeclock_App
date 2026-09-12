@@ -14,6 +14,10 @@
     <a class="nav-link" href="UserManagement.php">User Management</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="LoginManagement.php">Login Management</a>
+    <a class="nav-link" href="Registration.php">User Registration</a>
 </li>
+<li class="nav-item">
+    <a class="nav-link" href="ChangePassword.php">Change Password</a>
+</li>
+
 
