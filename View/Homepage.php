@@ -1,4 +1,11 @@
 <?php
+session_start();
+if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) { 
+    header("Location: ../View/Login.php");
+    exit();
+}
+?>
+<?php
 require_once('../controller/Student_Controller.php');
 require_once('../controller/User_Controller.php');
 require_once('../controller/Login_Controller.php');

@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
+    header("Location: ../View/Login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>

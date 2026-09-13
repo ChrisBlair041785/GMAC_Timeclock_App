@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
+    header("Location: ../View/Login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,16 +39,33 @@
             try{ 
                 require('../Model/database.php');
                 $conn = get_db_conn();
-                $query = "SELECT CONCAT (LastName, ', ', FirstName) AS Name, ";
-                $query .="Email FROM users ORDER BY FirstName ASC";
+                $query = "SELECT LastName, FirstName, Email, ID ";
+                $query .= "FROM users ORDER BY LastName ASC";
                 $result = mysqli_query($conn, $query);
                 if ($result) {
-                    echo '<table class="table table-striped">';
-                    echo '<tr><th scope="col">Name</th><th scope="col">Email</th></tr>';
+                    echo '<table class="table table-striped"> 
+                            <tr>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Email</th>
+                            </tr>';
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                echo '<tr><td>' . $row['Name'] . '</td><td>' . $row['Email'] . '</td></tr>'; }
-                    echo '</table>'; 
-                    mysqli_free_result ($result); 
+                    $ID = htmlspecialchars($row['ID'], ENT_QUOTES);
+                    $LastName = htmlspecialchars($row['LastName'], ENT_QUOTES);
+                    $FirstName = htmlspecialchars($row['FirstName'], ENT_QUOTES);
+                    $Email = htmlspecialchars($row['Email'], ENT_QUOTES);
+                    echo '<tr>
+                            <td><a href="Edit_Record.php?ID=' . $ID . '">Edit</a></td>
+                            <td><a href="Delete_User.php?ID=' . $ID . '">Delete</a></td>
+                            <td>' . $LastName . '</td>
+                            <td>' . $FirstName . '</td>
+                            <td>' . $Email . '</td>
+                          </tr>';
+                }
+                echo '</table>';
+                mysqli_free_result($result);
                 } else {
                     echo '<p class"error">The current users could not be retrieved. We apologize';
                     echo 'for any inconvenience.</p>'; 

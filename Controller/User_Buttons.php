@@ -29,8 +29,8 @@
         'logout' => [
             'class' => 'btn-secondary',
             'label' => 'Logout',
-            'value' => '../View/login.php',
-            'onclick' => "location.href='../View/login.php'",
+            'value' => '../View/logout.php',
+            'onclick' => "location.href='../View/Logout.php'",
         ],
     ];
     ?>

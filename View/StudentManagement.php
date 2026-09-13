@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
+    header("Location: ../View/Login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,7 +37,7 @@
         
         </div>
         <aside class="col-sm-2">
-            <?php include('../controller/user_buttons.php'); ?>
+            <?php include('../Controller/User_Buttons.php'); ?>
         </aside>
     </div>
     </body>
