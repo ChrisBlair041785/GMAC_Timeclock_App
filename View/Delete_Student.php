@@ -16,7 +16,7 @@ try {
         $sure = htmlspecialchars($_POST['sure'], ENT_QUOTES);
         if ($sure == 'Yes') {
             $q = mysqli_stmt_init($conn);
-            mysqli_stmt_prepare($q, 'DELETE FROM users WHERE ID=? LIMIT 1');
+            mysqli_stmt_prepare($q, 'DELETE FROM students WHERE StudID=? LIMIT 1');
             mysqli_stmt_bind_param($q, "i", $ID);
             mysqli_stmt_execute($q);
             if (mysqli_stmt_affected_rows($q) == 1) { 
@@ -33,7 +33,7 @@ try {
     } else {
         $q = mysqli_stmt_init($conn);
         $query = "SELECT CONCAT(FirstName, ' ', LastName) FROM ";
-        $query .= "users WHERE ID=?";
+        $query .= "students WHERE StudID=?";
         mysqli_stmt_prepare($q, $query);
         mysqli_stmt_bind_param($q, "i", $ID);
         mysqli_stmt_execute($q);
@@ -47,7 +47,7 @@ try {
     <head>
         <title>GMAC Timekeeping System</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
@@ -70,9 +70,9 @@ try {
                 </ul>
             </nav>
             <div class="col-sm-8">
-                <h2 class="h2 text-center">Edit Record</h2>
+                <h2 class="h2 text-center">Delete Student Record</h2>
                 <h2 class="h2 text-center">Are you sure you want to permanently delete <?php echo $user; ?>?</h2>
-                <form action="Delete_User.php" method="post" name="deleteform" id="deleteform">
+                <form action="Delete_Student.php" method="post" name="deleteform" id="deleteform">
                     <div class="form-group row">
                         <label for="" class="col-sm-4 col-form-label"></label>
                         <div class="col-sm-8" style="padding-left: 70px;">

@@ -5,12 +5,6 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) {
     exit();
 }
 ?>
-<?php
-require_once('../controller/Student_Controller.php');
-require_once('../controller/User_Controller.php');
-require_once('../controller/Login_Controller.php');
-require_once('../controller/Timeclock_Controller.php');
-?>
 <!DOCTYPE html>
 <html lang="en">
     <head>

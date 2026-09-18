@@ -8,10 +8,16 @@ function All_Students() {
     return $results;
 }
 
-function Add_Student($FirstName, $LastName, $School) { 
+function Add_StudentDB($FirstName, $LastName, $School) { 
     $conn = get_db_conn();
     $query = "INSERT INTO students (FirstName, LastName, School) 
         VALUES ('$FirstName', '$LastName', '$School')";
+    return mysqli_query($conn, $query);
+}
+function Add_StudentTC($FirstName, $LastName) {
+    $conn = get_db_conn();
+    $query = "INSERT INTO timeclock (FirstName, LastName, Arrived, Departed) 
+        VALUES ('$FirstName', '$LastName', NULL, NULL)";
     return mysqli_query($conn, $query);
 }
 

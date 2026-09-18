@@ -75,7 +75,7 @@ try {
 
     if (mysqli_num_rows($results) == 1) {
  ?>
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>GMAC Timekeeping System</title>

@@ -2,7 +2,7 @@
     <a class="nav-link" href="Homepage.php">Home</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="Timekeeping.php">Daily Time Sheets</a>
+    <a class="nav-link" href="Timeclock.php">Daily Student Clock-In/Out</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="TimeReports.php">Timesheet Reports</a>

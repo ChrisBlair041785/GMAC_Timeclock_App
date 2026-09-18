@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
+if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) { 
     header("Location: ../View/Login.php");
     exit();
 }
@@ -10,7 +10,7 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
     <head>
         <title>GMAC Timekeeping System</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" shrink-to-fit="no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
@@ -33,14 +33,13 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
             </ul>
         </nav>
         <div class="col-sm-8">
-        <h2 class="text-center">Student Management</h2>
-        <a href="Add_Student.php" class="btn btn-primary">Add New Student</a>
-        <p>
-            <?php
-            try{ 
-                require('../Model/database.php');
+        <h2 class="text-center">Daily Time Clock-In/Out</h2>
+        <p class="text-center">Please use the buttons below to clock in or out the studentsfor the day.</p>
+        <?php
+        require('../Model/database.php');
                 $conn = get_db_conn();
-                $query = "SELECT StudID, LastName, FirstName, School FROM Students ORDER BY LastName ASC";
+                  $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School, t.Arrived, t.Departed
+                         FROM Students s LEFT JOIN timeclock t ON t.StudID = s.StudID ORDER BY s.LastName ASC";
                 $result = mysqli_query($conn, $query);
                 if ($result) {
                     echo '<table class="table table-striped"> 
@@ -49,21 +48,27 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                                 <th scope="col">Last Name</th>
                                 <th scope="col">First Name</th>
                                 <th scope="col">School</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
+                                <th scope="col">Clock In/Out</th>
                             </tr>';
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                     $ID = htmlspecialchars($row['StudID'], ENT_QUOTES);
                     $LastName = htmlspecialchars($row['LastName'], ENT_QUOTES);
                     $FirstName = htmlspecialchars($row['FirstName'], ENT_QUOTES);
                     $School = htmlspecialchars($row['School'], ENT_QUOTES);
+                    $arrived = $row['Arrived'];
+                    $departed = $row['Departed'];
+                    $action = ($arrived !== null && $departed === null) ? 'clock_out' : 'clock_in';
+                    $buttonClass = $action === 'clock_in' ? 'btn-success' : 'btn-danger';
+                    $buttonText = $action === 'clock_in' ? 'Clock In' : 'Clock Out';
                     echo '<tr>
                             <td>' . $ID . '</td>
                             <td>' . $LastName . '</td>
                             <td>' . $FirstName . '</td>
                             <td>' . $School . '</td>
-                            <td><a href="Edit_Student.php?ID=' . $ID . '">Edit</a></td>
-                            <td><a href="Delete_Student.php?ID=' . $ID . '">Delete</a></td>
+                            <td colspan="2"><form action="../Controller/Timeclock_Controller.php" method="post">
+                                <input type="hidden" name="ID" value="' . $ID . '">
+                                <button type="submit" name="action" value="' . $action . '" class="btn ' . $buttonClass . '">' . $buttonText . '</button>
+                            </form></td>
                           </tr>';
                 }
                 echo '</table>';
@@ -72,16 +77,9 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                     echo '<p class"error">The current users could not be retrieved. We apologize for any inconvenience.</p>'; 
                     echo '<p>' . mysqli_error($conn) . '<br><br>Query: ' . $query . '</p>';
                     exit();
-                } ($result);
+                }
                 mysqli_close($conn); 
-            } catch (Exception $e) {
-                echo '<p class="text-center" style="color:red">An Exception occurred. Message: ' . $e->getMessage() . ' </p>';
-                echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';
-            } catch (Error $e) {
-                echo '<p class="text-center" style="color:red">An Error occurred. Message: ' . $e->getMessage() . ' </p>';
-                echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';
-            }
-        ?>
+                ?>       
         </div>
         <aside class="col-sm-2">
             <?php include('../Controller/User_Buttons.php'); ?>

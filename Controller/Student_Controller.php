@@ -9,8 +9,10 @@ $StudentID = -1;
 $FirstName = "";
 $LastName = "";
 $School = "";
+$addMessage = "";
+$addMessageClass = "";
 
-$add = false; 
+$add = $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit']);
 $edit = false; 
 $update = false; 
 $delete = false; 
@@ -28,13 +30,22 @@ if ($add) {
     $LastName = $_POST['LastName'] ?? '';
     $School = $_POST['School'] ?? '';
 
-    $addQuery = Add_Student($FirstName, $LastName, $School);
+    $addQueryDB = Add_StudentDB($FirstName, $LastName, $School);
+    $addQueryTC = Add_StudentTC($FirstName, $LastName);
 
-    //Clear the fields
-    $StudentID = -1;
-    $FirstName = "";
-    $LastName = "";
-    $School = "";
+    if ($addQueryDB && $addQueryTC) {
+        $addMessage = "Student added successfully.";
+        $addMessageClass = "alert-success";
+
+        //Clear the fields after a successful insert
+        $StudentID = -1;
+        $FirstName = "";
+        $LastName = "";
+        $School = "";
+    } else {
+        $addMessage = "Student could not be added. Please try again.";
+        $addMessageClass = "alert-danger";
+    }
 }
 else if ($edit) {
     //Gets the students information from the database based on the StudentID
