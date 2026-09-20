@@ -22,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function clock_in($conn, $ID) {
-    $query = "UPDATE timeclock SET Arrived = NOW(), Departed = NULL WHERE StudID = '$ID'";
+    $query = "INSERT INTO timeclock (StudID, Arrived, Departed) VALUES ('$ID', NOW(), NULL)";
     mysqli_query($conn, $query);
 }
 
 function clock_out($conn, $ID) {
-    $query = "UPDATE timeclock SET Departed = NOW() WHERE StudID = '$ID'";
+    $query = "INSERT INTO timeclock (StudID, Arrived, Departed) VALUES ('$ID', NULL, NOW())";
     mysqli_query($conn, $query);
 }
 ?>

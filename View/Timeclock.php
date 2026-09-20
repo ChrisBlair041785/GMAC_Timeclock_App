@@ -38,8 +38,23 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) {
         <?php
         require('../Model/database.php');
                 $conn = get_db_conn();
-                  $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School, t.Arrived, t.Departed
-                         FROM Students s LEFT JOIN timeclock t ON t.StudID = s.StudID ORDER BY s.LastName ASC";
+                  $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School,
+                                   CASE
+                                       WHEN MAX(t.Arrived) IS NOT NULL
+                                            AND (MAX(t.Departed) IS NULL OR MAX(t.Arrived) > MAX(t.Departed))
+                                       THEN MAX(t.Arrived)
+                                       ELSE NULL
+                                   END AS Arrived,
+                                   CASE
+                                       WHEN MAX(t.Departed) IS NOT NULL
+                                            AND (MAX(t.Arrived) IS NULL OR MAX(t.Departed) > MAX(t.Arrived))
+                                       THEN MAX(t.Departed)
+                                       ELSE NULL
+                                   END AS Departed
+                            FROM Students s
+                            LEFT JOIN timeclock t ON t.StudID = s.StudID
+                            GROUP BY s.StudID, s.LastName, s.FirstName, s.School
+                            ORDER BY s.LastName ASC";
                 $result = mysqli_query($conn, $query);
                 if ($result) {
                     echo '<table class="table table-striped"> 
@@ -79,7 +94,7 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) {
                     exit();
                 }
                 mysqli_close($conn); 
-                ?>       
+                ?>
         </div>
         <aside class="col-sm-2">
             <?php include('../Controller/User_Buttons.php'); ?>

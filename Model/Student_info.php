@@ -14,11 +14,23 @@ function Add_StudentDB($FirstName, $LastName, $School) {
         VALUES ('$FirstName', '$LastName', '$School')";
     return mysqli_query($conn, $query);
 }
-function Add_StudentTC($FirstName, $LastName) {
+
+function Add_StudentTC($StudID = null) {
+    if ($StudID === null) {
+        $StudID = Get_Last_Inserted_StudID();
+    }
     $conn = get_db_conn();
-    $query = "INSERT INTO timeclock (FirstName, LastName, Arrived, Departed) 
-        VALUES ('$FirstName', '$LastName', NULL, NULL)";
+    $query = "INSERT INTO timeclock (StudID, Arrived, Departed) 
+        VALUES ('$StudID', NULL, NULL)";
     return mysqli_query($conn, $query);
+}
+
+function Get_Last_Inserted_StudID() {
+    $conn = get_db_conn();
+    $query = "SELECT LAST_INSERT_ID() AS StudID";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['StudID'] ?? null;
 }
 
 function Get_Student_By_ID($StudID) {

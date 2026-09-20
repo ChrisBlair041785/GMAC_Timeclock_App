@@ -31,9 +31,9 @@ if ($add) {
     $School = $_POST['School'] ?? '';
 
     $addQueryDB = Add_StudentDB($FirstName, $LastName, $School);
-    $addQueryTC = Add_StudentTC($FirstName, $LastName);
+    //$addQueryTC = Add_StudentTC();  && $addQueryTC
 
-    if ($addQueryDB && $addQueryTC) {
+    if ($addQueryDB ) {
         $addMessage = "Student added successfully.";
         $addMessageClass = "alert-success";
 
