@@ -67,13 +67,21 @@ else if ($update) {
     $LastName = $_POST['LastName'] ?? '';
     $School = $_POST['School'] ?? '';
 
-    $updateQuery = Update_Student($StudentID, $FirstName, $LastName, $School);
+    $updateQuery = Update_Student($FirstName, $LastName, $School);
+    if ($updateQueryDB ) {
+        $updateMessage = "Student was updated successfully.";
+        $updateMessageClass = "alert-success";
 
-    //Clear the fields after update
-    $StudentID = -1;
-    $FirstName = "";
-    $LastName = "";
-    $School = "";
+        //Clear the fields after a successful insert
+        $StudentID = -1;
+        $FirstName = "";
+        $LastName = "";
+        $School = "";
+    } else {
+        $updateMessage = "Student could not be updated. Please try again.";
+        $updateMessageClass = "alert-danger";
+    }
+    
 }
 else if ($delete) {
     //Deletes the student based on the StudentID

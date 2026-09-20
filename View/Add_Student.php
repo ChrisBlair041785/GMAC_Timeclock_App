@@ -48,7 +48,7 @@ require_once('../Model/Student_info.php');
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="LastName" name="LastName" 
                         placeholder="Last Name" maxlength="30" required 
-                        value="<?php if (isset($_POST['LastName'])) echo $_POST['LastName']; ?>">
+                        value="<?php echo htmlspecialchars($LastName, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
             <div class="form-group row">
@@ -56,7 +56,7 @@ require_once('../Model/Student_info.php');
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="FirstName" name="FirstName" 
                         placeholder="First Name" maxlength="25" required 
-                        value="<?php if (isset($_POST['FirstName'])) echo $_POST['FirstName']; ?>">
+                        value="<?php echo htmlspecialchars($FirstName, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
             <div class="form-group row">
@@ -64,7 +64,7 @@ require_once('../Model/Student_info.php');
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="School" name="School" 
                         placeholder="School" maxlength="50" required 
-                        value="<?php if (isset($_POST['School'])) echo $_POST['School']; ?>">
+                        value="<?php echo htmlspecialchars($School, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
             <div class="form-group row">

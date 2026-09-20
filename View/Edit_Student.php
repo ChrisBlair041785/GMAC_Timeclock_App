@@ -37,6 +37,7 @@ try {
                 throw new Exception(mysqli_stmt_error($q));
             }
             echo '<h3 class="text-center">The student has been edited successfully.</h3>';
+            echo '<a href= "\..\View\StudentManagement.php">Back to Student Management</a>';
         } else {
             echo '<p class="text-center">The following error(s) occurred:<br />';
             foreach ($errors as $msg) {
@@ -61,7 +62,7 @@ try {
     <head>
         <title>GMAC Timekeeping System</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" shrink-to-fit="no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
@@ -91,7 +92,7 @@ try {
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="LastName" name="LastName" 
                                 placeholder="Last Name" maxlength="30" required 
-                                value="<?php echo htmlspecialchars($row[1], ENT_QUOTES); ?>">
+                                value="<?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
                     </div>
                     <div class="form-group-row">
@@ -99,7 +100,7 @@ try {
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="FirstName" name="FirstName" 
                                 placeholder="First Name" maxlength="30" required 
-                                value="<?php echo htmlspecialchars($row[0], ENT_QUOTES); ?>">
+                                value="<?php echo htmlspecialchars($row[0], ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
                     </div>
                     <div class="form-group-row">
@@ -107,10 +108,10 @@ try {
                         <div class="col-sm-8">
                             <input type="school" class="form-control" id="School" name="School" 
                                 placeholder="School" maxlength="30" required 
-                                value="<?php echo htmlspecialchars($row[2], ENT_QUOTES); ?>">
+                                value="<?php echo htmlspecialchars($row[2], ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
                     </div>
-                    <input type="hidden" name="ID" value="<?php echo $ID; ?>">
+                    <input type="hidden" name="StudentID" value="<?php echo $StudentID; ?>">
                     <div class="form-group-row">
                         <div class="col-sm-8">
                             <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Save Changes">

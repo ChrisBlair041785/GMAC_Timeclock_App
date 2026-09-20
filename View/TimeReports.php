@@ -58,7 +58,7 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                                 AND YEAR(COALESCE(t.Arrived, t.Departed)) = YEAR(CURDATE())'
             ][$report];
             $conn = get_db_conn();
-                    $reportQuery = "SELECT s.StudID, s.LastName, s.FirstName, s.School,
+                    $reportQuery = "SELECT s.StudID, s.LastName, s.FirstName,
                     t.Arrived AS CheckIn, t.Departed AS CheckOut FROM Students s 
                     INNER JOIN timeclock t ON t.StudID = s.StudID WHERE $reportDateFilter 
                     ORDER BY s.LastName ASC, COALESCE(t.Arrived, t.Departed) ASC";
@@ -69,14 +69,12 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                 <table class="table table-bordered table-sm">
                     <tr>
                         <th>Student</th>
-                        <th>School</th>
                         <th>Check In</th>
                         <th>Check Out</th>
                     </tr>
                     <?php while ($reportRow = mysqli_fetch_assoc($reportResult)): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($reportRow['LastName'] . ', ' . $reportRow['FirstName'], ENT_QUOTES); ?></td>
-                            <td><?php echo htmlspecialchars($reportRow['School'], ENT_QUOTES); ?></td>
                             <td><?php echo $reportRow['CheckIn'] ? date('m/d/Y h:i A', strtotime($reportRow['CheckIn'])) : ''; ?></td>
                             <td><?php echo $reportRow['CheckOut'] ? date('m/d/Y h:i A', strtotime($reportRow['CheckOut'])) : ''; ?></td>
                         </tr>

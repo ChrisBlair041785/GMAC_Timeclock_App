@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $errorstring .= " $msg<br>\n";
                 }
                 $errorstring .= "Please try again.<br>";
-                echo "<p class=' text-center col-sm-2' style='color:red;'>$errorstring</p>";
+                echo "<p class='text-center col-sm-8' style='color:red;'>$errorstring</p>";
             }
             mysqli_stmt_free_result($q);
             mysqli_stmt_close($q);
