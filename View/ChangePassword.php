@@ -1,8 +1,21 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 1)) { 
-    header("Location: ../View/Login.php");
-    exit();
+require_once('../Utility/Security.php');
+require_once('../Controller/User_Controller.php');
+Security::checkAuthority([0, 1, 2]);
+if (isset($_POST['logout'])) { Security::logout(); }
+
+$email = $_POST['Email'] ?? '';
+$errors = [];
+$success = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errors = UserController::changePassword(
+        $email,
+        $_POST['Password'] ?? '',
+        $_POST['Password1'] ?? '',
+        $_POST['Password2'] ?? ''
+    );
+    $success = empty($errors);
 }
 ?>
 <!DOCTYPE html>
@@ -10,11 +23,28 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 1)) {
     <head>
         <title>GMAC Timekeeping System</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" shrink-to-fit="no">
+        <?php if ($success): ?>
+        <meta http-equiv="refresh" content="5;url=Homepage.php">
+        <?php endif; ?>
+        <script>
+            function checked() {
+                const password1 = document.getElementById('password1').value;
+                const password2 = document.getElementById('password2').value;
+                const message = document.getElementById('message');
+                if (password1 === password2) {
+                    message.style.color = 'green';
+                    message.textContent = 'Passwords match';
+                    return true;
+                }
+                message.style.color = 'red';
+                message.textContent = 'Passwords do not match';
+                return false;
+            }
+        </script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
-        <script src="../controller/verify.js"></script>
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -33,21 +63,25 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 1)) {
                 <?php include('../controller/nav.php'); ?>
             </ul>
         </nav>
-       <?php 
-       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        require('../controller/change_password.php');
-       }
-       ?>
        <div class="col-sm-8">
         <h2 class="text-center">Change Password</h2>
-            <form action="../controller/change_password.php" method="post" name="regform"
+            <?php if ($success): ?>
+                <div class="alert alert-success" role="alert">
+                    Password changed successfully. Returning to the homepage in 5 seconds...
+                </div>
+            <?php elseif ($errors): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo htmlspecialchars(implode(' ', $errors), ENT_QUOTES, 'UTF-8'); ?>
+                </div>
+            <?php endif; ?>
+            <form action="ChangePassword.php" method="post" name="regform"
                 id="regform" onsubmit="return checked();">
                 <div class="form-group row">
                     <label for="Email" class="col-sm-4 col-form-label">Email:</label>
                     <div class="col-sm-8">
                         <input type="email" class="form-control" id="Email" name="Email" 
                         placeholder="Email" maxlength="50" required
-                        value="<?php if (isset($_POST['Email'])) echo $_POST['Email']; ?>" >
+                        value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" >
                     </div>
                 </div>
                 <div class="form-group row">
@@ -55,24 +89,24 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 1)) {
                     <div class="col-sm-8">
                         <input type="password" class="form-control" id="Password" name="Password" 
                         placeholder="Password" minlength="8" maxlength="12"
-                        required value="<?php if (isset($_POST['Password'])) echo $_POST['Password']; ?>" >
+                        required >
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="Password1" class="col-sm-4 col-form-label">New Password:</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="Password1" name="Password1" 
+                        <input type="password" class="form-control" id="password1" name="Password1" 
                         placeholder="Password" minlength="8" maxlength="12" 
-                        required value="<?php if (isset($_POST['Password1'])) echo $_POST['Password1']; ?>" >
+                        required >
                         <span id="message">Between 8 and 12 characters.</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="Password2" class="col-sm-4 col-form-label">Confirm Password:</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="Password2" name="Password2" 
+                        <input type="password" class="form-control" id="password2" name="Password2" 
                         placeholder="Password" minlength="8" maxlength="12"
-                        required value="<?php if (isset($_POST['Password2'])) echo $_POST['Password2']; ?>" >
+                        required >
                     </div>
                 </div>
                 <div class="form-group row">

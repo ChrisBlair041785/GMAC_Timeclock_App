@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
-    header("Location: ../View/Login.php");
-    exit();
-}
+require_once('../Controller/Reports_Controller.php');
+require_once('../Utility/Security.php');
+Security::checkAuthority([1, 2]);
+if (isset($_POST['logout'])) { Security::logout(); }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,13 +36,21 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
         <h2 class="text-center">Time Reports</h2>
         <p class="text-center">Please select a report to view the time records for the students.</p>
         <?php
-        require('../Model/database.php');   
         $report = $_GET['report'] ?? '';
         $reportLabels = [
             'daily' => 'Daily Report',
             'weekly' => 'Weekly Report',
             'monthly' => 'Monthly Report'
         ];
+        $reportRows = [];
+        $reportError = '';
+        if (isset($reportLabels[$report])) {
+            try {
+                $reportRows = ReportsController::getTimeReport($report);
+            } catch (Exception $e) {
+                $reportError = 'The requested time report could not be retrieved.';
+            }
+        }
         ?>
         <form method="get" action="TimeReports.php" class="text-center mb-3">
             <button type="submit" name="report" value="daily" class="btn btn-primary">Daily Report</button>
@@ -50,40 +58,27 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
             <button type="submit" name="report" value="monthly" class="btn btn-primary">Monthly Report</button>
         </form>
         <?php if (isset($reportLabels[$report])): ?>
-            <?php
-            $reportDateFilter = [
-                'daily' => 'DATE(COALESCE(t.Arrived, t.Departed)) = CURDATE()',
-                'weekly' => 'YEARWEEK(COALESCE(t.Arrived, t.Departed), 1) = YEARWEEK(CURDATE(), 1)',
-                'monthly' => 'MONTH(COALESCE(t.Arrived, t.Departed)) = MONTH(CURDATE())
-                                AND YEAR(COALESCE(t.Arrived, t.Departed)) = YEAR(CURDATE())'
-            ][$report];
-            $conn = get_db_conn();
-                    $reportQuery = "SELECT s.StudID, s.LastName, s.FirstName,
-                    t.Arrived AS CheckIn, t.Departed AS CheckOut FROM Students s 
-                    INNER JOIN timeclock t ON t.StudID = s.StudID WHERE $reportDateFilter 
-                    ORDER BY s.LastName ASC, COALESCE(t.Arrived, t.Departed) ASC";
-                $reportResult = mysqli_query($conn, $reportQuery);
-            ?>
             <h3 class="text-center"><?php echo $reportLabels[$report]; ?></h3>
-            <?php if ($reportResult && mysqli_num_rows($reportResult) > 0): ?>
+            <?php if ($reportError): ?>
+                <p class="text-center text-danger"><?php echo $reportError; ?></p>
+            <?php elseif ($reportRows): ?>
                 <table class="table table-bordered table-sm">
                     <tr>
                         <th>Student</th>
                         <th>Check In</th>
                         <th>Check Out</th>
                     </tr>
-                    <?php while ($reportRow = mysqli_fetch_assoc($reportResult)): ?>
+                    <?php foreach ($reportRows as $reportRow): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($reportRow['LastName'] . ', ' . $reportRow['FirstName'], ENT_QUOTES); ?></td>
                             <td><?php echo $reportRow['CheckIn'] ? date('m/d/Y h:i A', strtotime($reportRow['CheckIn'])) : ''; ?></td>
                             <td><?php echo $reportRow['CheckOut'] ? date('m/d/Y h:i A', strtotime($reportRow['CheckOut'])) : ''; ?></td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </table>
             <?php else: ?>
                 <p class="text-center">No time records found for this period.</p>
             <?php endif; ?>
-            <?php mysqli_close($conn); ?>
         <?php endif; ?>
         </div>
         <aside class="col-sm-2">

@@ -1,33 +1,28 @@
 <?php
-require_once("../Model/Timeclock.php");
-$conn = get_db_conn();
+require_once __DIR__ . "/../Model/Timeclock_db.php";
 
-function handle_timeclock_action($conn) {
-    if (isset($_POST['action']) && isset($_POST['ID'])) {
-        $action = $_POST['action'];
-        $ID = $_POST['ID'];
-        if ($action === 'clock_in') {
-            clock_in($conn, $ID);
-        } elseif ($action === 'clock_out') {
-            clock_out($conn, $ID);
+class TimeclockController {
+
+    public static function getStudentStatuses() {
+        $students = Timeclock_DB::getStudentStatuses();
+        if ($students === false) {
+            throw new RuntimeException('The current timeclock records could not be retrieved.');
         }
+        return $students;
+    }
+
+    public static function recordAction($ID, $action) {
+        $ID = filter_var($ID, FILTER_VALIDATE_INT);
+        if (!$ID || !in_array($action, ['clock_in', 'clock_out'], true)) {
+            return false;
+        }
+        return Timeclock_DB::recordAction($ID, $action);
     }
 }
 
-handle_timeclock_action($conn);
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header("Location: ../View/Timeclock.php");
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    TimeclockController::recordAction($_POST['ID'] ?? null, $_POST['action'] ?? '');
+    header('Location: ../View/Timeclock.php');
     exit();
-}
-
-function clock_in($conn, $ID) {
-    $query = "INSERT INTO timeclock (StudID, Arrived, Departed) VALUES ('$ID', NOW(), NULL)";
-    mysqli_query($conn, $query);
-}
-
-function clock_out($conn, $ID) {
-    $query = "INSERT INTO timeclock (StudID, Arrived, Departed) VALUES ('$ID', NULL, NOW())";
-    mysqli_query($conn, $query);
 }
 ?>

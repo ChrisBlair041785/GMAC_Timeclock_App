@@ -2,10 +2,10 @@
     <a class="nav-link" href="Homepage.php">Home</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="Timeclock.php">Daily Student Clock-In/Out</a>
+    <a class="nav-link" href="Timeclock.php">Student Clock-In/Out</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="TimeReports.php">Timesheet Reports</a>
+    <a class="nav-link" href="TimeReports.php">Student Time Clock Reports</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="StudentManagement.php">Student Management</a>

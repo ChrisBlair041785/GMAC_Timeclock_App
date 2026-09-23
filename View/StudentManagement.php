@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
-    header("Location: ../View/Login.php");
-    exit();
-}
+require_once('../Controller/Student_Controller.php');
+require_once('../Utility/Security.php');
+Security::checkAuthority([2]);
+if (isset($_POST['logout'])) { Security::logout(); }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,11 +38,8 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
         <p>
             <?php
             try{ 
-                require('../Model/database.php');
-                $conn = get_db_conn();
-                $query = "SELECT StudID, LastName, FirstName, School FROM Students ORDER BY LastName ASC";
-                $result = mysqli_query($conn, $query);
-                if ($result) {
+                $students = StudentController::getAllStudents();
+                if ($students) {
                     echo '<table class="table table-striped"> 
                             <tr>
                                 <th scope="col">Student ID</th>
@@ -52,11 +49,11 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                                 <th scope="col">Edit</th>
                                 <th scope="col">Delete</th>
                             </tr>';
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                    $ID = htmlspecialchars($row['StudID'], ENT_QUOTES);
-                    $LastName = htmlspecialchars($row['LastName'], ENT_QUOTES);
-                    $FirstName = htmlspecialchars($row['FirstName'], ENT_QUOTES);
-                    $School = htmlspecialchars($row['School'], ENT_QUOTES);
+                foreach ($students as $student) {
+                    $ID = htmlspecialchars($student->getStudID(), ENT_QUOTES);
+                    $LastName = htmlspecialchars($student->getLastName(), ENT_QUOTES);
+                    $FirstName = htmlspecialchars($student->getFirstName(), ENT_QUOTES);
+                    $School = htmlspecialchars($student->getSchool(), ENT_QUOTES);
                     echo '<tr>
                             <td>' . $ID . '</td>
                             <td>' . $LastName . '</td>
@@ -67,13 +64,9 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                           </tr>';
                 }
                 echo '</table>';
-                mysqli_free_result($result);
                 } else {
-                    echo '<p class"error">The current users could not be retrieved. We apologize for any inconvenience.</p>'; 
-                    echo '<p>' . mysqli_error($conn) . '<br><br>Query: ' . $query . '</p>';
-                    exit();
-                } ($result);
-                mysqli_close($conn); 
+                    echo '<p class="error">No students could be retrieved.</p>'; 
+                }
             } catch (Exception $e) {
                 echo '<p class="text-center" style="color:red">An Exception occurred. Message: ' . $e->getMessage() . ' </p>';
                 echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';

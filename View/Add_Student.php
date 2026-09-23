@@ -1,12 +1,20 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
-    header("Location: ../View/Login.php");
-    exit();
-}
 require_once('../Controller/Student_Controller.php');
-require_once('../Model/database.php');
-require_once('../Model/Student_info.php');
+require_once('../Utility/Security.php');
+Security::checkAuthority([2]);
+if (isset($_POST['logout'])) { Security::logout(); }
+
+$lastName = $_POST['LastName'] ?? '';
+$firstName = $_POST['FirstName'] ?? '';
+$school = $_POST['School'] ?? '';
+$errors = [];
+$success = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errors = StudentController::AddStudentDB($firstName, $lastName, $school);
+    $success = empty($errors);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,9 +45,13 @@ require_once('../Model/Student_info.php');
         </nav>
         <div class="col-sm-8">
             <h2 class="text-center">Student Registration</h2>
-            <?php if ($addMessage !== ""): ?>
-                <div class="alert <?php echo $addMessageClass; ?>" role="alert">
-                    <?php echo htmlspecialchars($addMessage, ENT_QUOTES, 'UTF-8'); ?>
+            <?php if ($success): ?>
+                <div class="alert alert-success" role="alert">
+                    Student added successfully. Returning to Student Management in 5 seconds...
+                </div>
+            <?php elseif ($errors): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo htmlspecialchars(implode(' ', $errors), ENT_QUOTES, 'UTF-8'); ?>
                 </div>
             <?php endif; ?>
             <form action="Add_Student.php" method="POST">
@@ -48,7 +60,7 @@ require_once('../Model/Student_info.php');
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="LastName" name="LastName" 
                         placeholder="Last Name" maxlength="30" required 
-                        value="<?php echo htmlspecialchars($LastName, ENT_QUOTES, 'UTF-8'); ?>">
+                        value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
             <div class="form-group row">
@@ -56,7 +68,7 @@ require_once('../Model/Student_info.php');
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="FirstName" name="FirstName" 
                         placeholder="First Name" maxlength="25" required 
-                        value="<?php echo htmlspecialchars($FirstName, ENT_QUOTES, 'UTF-8'); ?>">
+                        value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
             <div class="form-group row">
@@ -64,7 +76,7 @@ require_once('../Model/Student_info.php');
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="School" name="School" 
                         placeholder="School" maxlength="50" required 
-                        value="<?php echo htmlspecialchars($School, ENT_QUOTES, 'UTF-8'); ?>">
+                        value="<?php echo htmlspecialchars($school, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
             <div class="form-group row">

@@ -1,9 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) { 
-    header("Location: ../View/Login.php");
-    exit();
-}
+require_once('../Utility/Security.php');
+Security::checkAuthority([0, 1, 2]);
+if (isset($_POST['logout'])) { Security::logout(); }
 ?>
 <!DOCTYPE html>
 <html lang="en">

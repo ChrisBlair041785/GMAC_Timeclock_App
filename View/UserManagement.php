@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) { 
-    header("Location: ../View/Login.php");
-    exit();
-}
+require_once('../Controller/User_Controller.php');
+require_once('../Utility/Security.php');
+Security::checkAuthority([2]);
+if (isset($_POST['logout'])) { Security::logout(); }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,12 +37,8 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
         <p>
             <?php
             try{ 
-                require('../Model/database.php');
-                $conn = get_db_conn();
-                $query = "SELECT LastName, FirstName, Email, ID ";
-                $query .= "FROM users ORDER BY LastName ASC";
-                $result = mysqli_query($conn, $query);
-                if ($result) {
+                $users = UserController::getAllUsers();
+                if ($users) {
                     echo '<table class="table table-striped"> 
                             <tr>
                                 <th scope="col">Edit</th>
@@ -51,13 +47,13 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                                 <th scope="col">First Name</th>
                                 <th scope="col">Email</th>
                             </tr>';
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                    $ID = htmlspecialchars($row['ID'], ENT_QUOTES);
-                    $LastName = htmlspecialchars($row['LastName'], ENT_QUOTES);
-                    $FirstName = htmlspecialchars($row['FirstName'], ENT_QUOTES);
-                    $Email = htmlspecialchars($row['Email'], ENT_QUOTES);
+                foreach ($users as $user) {
+                    $ID = htmlspecialchars($user->getID(), ENT_QUOTES);
+                    $LastName = htmlspecialchars($user->getLastName(), ENT_QUOTES);
+                    $FirstName = htmlspecialchars($user->getFirstName(), ENT_QUOTES);
+                    $Email = htmlspecialchars($user->getEmail(), ENT_QUOTES);
                     echo '<tr>
-                            <td><a href="Edit_Record.php?ID=' . $ID . '">Edit</a></td>
+                            <td><a href="Edit_User.php?ID=' . $ID . '">Edit</a></td>
                             <td><a href="Delete_User.php?ID=' . $ID . '">Delete</a></td>
                             <td>' . $LastName . '</td>
                             <td>' . $FirstName . '</td>
@@ -65,14 +61,9 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] != 2)) {
                           </tr>';
                 }
                 echo '</table>';
-                mysqli_free_result($result);
                 } else {
-                    echo '<p class"error">The current users could not be retrieved. We apologize';
-                    echo 'for any inconvenience.</p>'; 
-                    echo '<p>' . mysqli_error($conn) . '<br><br>Query: ' . $q . '</p>';
-                    exit();
-                } ($result);
-                mysqli_close($conn); 
+                    echo '<p class="error">No users could be retrieved.</p>'; 
+                }
             } catch (Exception $e) {
                 echo '<p class="text-center" style="color:red">An Exception occurred. Message: ' . $e->getMessage() . ' </p>';
                 echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';

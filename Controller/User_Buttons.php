@@ -23,14 +23,12 @@
         'change_password' => [
             'class' => 'btn-primary',
             'label' => 'Change Password',
-            'value' => '../view/change_password.php',
-            'onclick' => "location.href='../view/changepassword.php'",
+            'value' => '../View/ChangePassword.php',
+            'onclick' => "location.href='../View/ChangePassword.php'",
         ],
         'logout' => [
             'class' => 'btn-secondary',
             'label' => 'Logout',
-            'value' => '../View/logout.php',
-            'onclick' => "location.href='../View/Logout.php'",
         ],
     ];
     ?>
@@ -38,12 +36,21 @@
     <div class="btn-group-vertical" role="group" aria-label="User Buttons">
         <?php foreach ($buttonsByPage[$currentPage] ?? [] as $buttonName): ?>
             <?php $button = $buttons[$buttonName]; ?>
-            <button type="button"
+            <?php if ($buttonName === 'logout'): ?>
+                <form method="post" action="">
+                <input type="hidden" name="logout" value="1">
+            <?php endif; ?>
+            <button type="<?php echo $buttonName === 'logout' ? 'submit' : 'button'; ?>"
                     class="btn <?= htmlspecialchars($button['class'], ENT_QUOTES, 'UTF-8') ?>"
                     name="<?= htmlspecialchars($buttonName, ENT_QUOTES, 'UTF-8') ?>"
+                    <?php if ($buttonName !== 'logout'): ?>
                     value="<?= htmlspecialchars($button['value'], ENT_QUOTES, 'UTF-8') ?>"
-                    onclick="<?= htmlspecialchars($button['onclick'], ENT_QUOTES, 'UTF-8') ?>">
+                    onclick="<?= htmlspecialchars($button['onclick'], ENT_QUOTES, 'UTF-8') ?>"
+                    <?php endif; ?>>
                     <?= htmlspecialchars($button['label'], ENT_QUOTES, 'UTF-8') ?>
             </button>
+            <?php if ($buttonName === 'logout'): ?>
+                </form>
+            <?php endif; ?>
         <?php endforeach; ?>
         </div>

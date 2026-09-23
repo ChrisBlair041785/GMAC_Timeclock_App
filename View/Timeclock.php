@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) { 
-    header("Location: ../View/Login.php");
-    exit();
-}
+require_once('../Controller/Timeclock_Controller.php');
+require_once('../Utility/Security.php');
+Security::checkAuthority([1, 2]);
+if (isset($_POST['logout'])) { Security::logout(); }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,27 +36,9 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) {
         <h2 class="text-center">Daily Time Clock-In/Out</h2>
         <p class="text-center">Please use the buttons below to clock in or out the studentsfor the day.</p>
         <?php
-        require('../Model/database.php');
-                $conn = get_db_conn();
-                  $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School,
-                                   CASE
-                                       WHEN MAX(t.Arrived) IS NOT NULL
-                                            AND (MAX(t.Departed) IS NULL OR MAX(t.Arrived) > MAX(t.Departed))
-                                       THEN MAX(t.Arrived)
-                                       ELSE NULL
-                                   END AS Arrived,
-                                   CASE
-                                       WHEN MAX(t.Departed) IS NOT NULL
-                                            AND (MAX(t.Arrived) IS NULL OR MAX(t.Departed) > MAX(t.Arrived))
-                                       THEN MAX(t.Departed)
-                                       ELSE NULL
-                                   END AS Departed
-                            FROM Students s
-                            LEFT JOIN timeclock t ON t.StudID = s.StudID
-                            GROUP BY s.StudID, s.LastName, s.FirstName, s.School
-                            ORDER BY s.LastName ASC";
-                $result = mysqli_query($conn, $query);
-                if ($result) {
+        try {
+                $students = TimeclockController::getStudentStatuses();
+                if ($students) {
                     echo '<table class="table table-striped"> 
                             <tr>
                                 <th scope="col">Student ID</th>
@@ -65,13 +47,13 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) {
                                 <th scope="col">School</th>
                                 <th scope="col">Clock In/Out</th>
                             </tr>';
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                    $ID = htmlspecialchars($row['StudID'], ENT_QUOTES);
-                    $LastName = htmlspecialchars($row['LastName'], ENT_QUOTES);
-                    $FirstName = htmlspecialchars($row['FirstName'], ENT_QUOTES);
-                    $School = htmlspecialchars($row['School'], ENT_QUOTES);
-                    $arrived = $row['Arrived'];
-                    $departed = $row['Departed'];
+                foreach ($students as $student) {
+                    $ID = htmlspecialchars($student['StudID'], ENT_QUOTES);
+                    $LastName = htmlspecialchars($student['LastName'], ENT_QUOTES);
+                    $FirstName = htmlspecialchars($student['FirstName'], ENT_QUOTES);
+                    $School = htmlspecialchars($student['School'], ENT_QUOTES);
+                    $arrived = $student['Arrived'];
+                    $departed = $student['Departed'];
                     $action = ($arrived !== null && $departed === null) ? 'clock_out' : 'clock_in';
                     $buttonClass = $action === 'clock_in' ? 'btn-success' : 'btn-danger';
                     $buttonText = $action === 'clock_in' ? 'Clock In' : 'Clock Out';
@@ -87,13 +69,12 @@ if (!isset($_SESSION['access']) or ($_SESSION['access'] <= 0)) {
                           </tr>';
                 }
                 echo '</table>';
-                mysqli_free_result($result);
                 } else {
-                    echo '<p class"error">The current users could not be retrieved. We apologize for any inconvenience.</p>'; 
-                    echo '<p>' . mysqli_error($conn) . '<br><br>Query: ' . $query . '</p>';
-                    exit();
+                    echo '<p class="error">No student timeclock records could be retrieved.</p>'; 
                 }
-                mysqli_close($conn); 
+        } catch (Exception $e) {
+            echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';
+        }
                 ?>
         </div>
         <aside class="col-sm-2">
