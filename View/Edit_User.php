@@ -32,11 +32,12 @@ $user = $ID ? UserController::getUserByID($ID) : null;
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <?php if ($success): ?>
-        <meta http-equiv="refresh" content="5;url=UserManagement.php">
+        <meta http-equiv="refresh" content="3;url=UserManagement.php">
         <?php endif; ?>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -62,7 +63,7 @@ $user = $ID ? UserController::getUserByID($ID) : null;
                 <?php else: ?>
                     <?php if ($success): ?>
                         <h3 class="text-center">The user has been edited successfully.</h3>
-                        <p class="text-center">Returning to User Management in 5 seconds...</p>
+                        <p class="text-center">Returning to User Management...</p>
                     <?php elseif ($errors): ?>
                         <p class="text-center text-danger">
                             The following error(s) occurred:<br>

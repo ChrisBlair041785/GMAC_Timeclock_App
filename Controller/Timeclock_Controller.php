@@ -3,8 +3,8 @@ require_once __DIR__ . "/../Model/Timeclock_db.php";
 
 class TimeclockController {
 
-    public static function getStudentStatuses() {
-        $students = Timeclock_DB::getStudentStatuses();
+    public static function getStudentStatuses($sort = 'lastname') {
+        $students = Timeclock_DB::getStudentStatuses($sort);
         if ($students === false) {
             throw new RuntimeException('The current timeclock records could not be retrieved.');
         }

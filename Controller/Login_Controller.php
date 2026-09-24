@@ -1,10 +1,18 @@
 <?php
 require_once __DIR__ . "/User_Controller.php";
+require_once __DIR__ . "/../Model/AuthLog_db.php";
 class LoginController {
     public static function handleLogin() {
         $login_msg = isset($_SESSION['logout_msg']) ? $_SESSION['logout_msg'] : ''; 
         if (isset($_POST['email']) && isset($_POST['password'])) {
-            $access_level = UserController::validUser($_POST['email'], $_POST['password']);
+            $email = trim($_POST['email']);
+            $access_level = UserController::validUser($email, $_POST['password']);
+            if ($access_level !== null) {
+                AuthLog_DB::record('login_success', $email, (int) $access_level);
+                $_SESSION['email'] = $email;
+            } else {
+                AuthLog_DB::record('login_failure', $email);
+            }
             if ($access_level === '0') {
                 $_SESSION['access'] = 0;
                 session_regenerate_id(true);

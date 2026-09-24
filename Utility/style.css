@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+	--ink: #17212b;
+	--muted: #65717d;
+	--paper: #ffffff;
+	--canvas: #f4f6f8;
+	--line: #dfe5ea;
+	--orange: #d97818;
+	--orange-dark: #ad5710;
+	--navy: #263746;
+	--success: #2f8064;
+	--danger: #bb4b47;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: var(--canvas);
+	color: var(--ink);
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+	font-size: 16px;
+	line-height: 1.55;
+}
+
+.container {
+	max-width: 1180px;
+	padding-bottom: 36px;
+}
+
+header.jumbotron {
+	border: 1px solid rgba(173, 87, 16, 0.22);
+	border-radius: 18px;
+	box-shadow: 0 12px 28px rgba(23, 33, 43, 0.12);
+	overflow: hidden;
+}
+
+header.jumbotron h1 {
+	margin: 24px 0;
+	color: var(--ink);
+	font-family: "Space Grotesk", "Segoe UI", sans-serif;
+	font-size: clamp(1.7rem, 3vw, 2.5rem);
+	font-weight: 700;
+	letter-spacing: 0;
+}
+
+header.jumbotron img {
+	border-radius: 12px;
+	object-fit: contain;
+}
+
+.row > nav.col-sm-2,
+.row > aside.col-sm-2 {
+	padding-top: 18px;
+}
+
+.nav-pills .nav-link {
+	border-radius: 10px;
+	color: var(--navy);
+	font-weight: 600;
+	margin-bottom: 5px;
+	padding: 10px 12px;
+	transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus {
+	background: #fff1e4;
+	color: var(--orange-dark);
+	transform: translateX(2px);
+}
+
+.container > div.row > .col-sm-8 {
+	min-height: 420px;
+	padding: 28px 30px 34px;
+	background: var(--paper);
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	box-shadow: 0 8px 22px rgba(23, 33, 43, 0.06);
+}
+
+h2, h3 {
+	color: var(--ink);
+	font-family: "Space Grotesk", "Segoe UI", sans-serif;
+	font-weight: 700;
+	letter-spacing: 0;
+}
+
+h2 {
+	margin-bottom: 20px;
+}
+
+.col-sm-8 > p.text-center:first-of-type {
+	color: var(--muted);
+}
+
+.btn {
+	border: 0;
+	border-radius: 9px;
+	font-weight: 700;
+	letter-spacing: 0;
+	padding: 9px 16px;
+	transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.btn:hover,
+.btn:focus {
+	box-shadow: 0 5px 12px rgba(23, 33, 43, 0.14);
+	transform: translateY(-1px);
+}
+
+.btn-primary {
+	background: var(--orange);
+	color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	background: var(--orange-dark);
+	color: #fff;
+}
+
+.btn-secondary {
+	background: var(--navy);
+	color: #fff;
+}
+
+.btn-success {
+	background: var(--success);
+}
+
+.btn-danger {
+	background: var(--danger);
+}
+
+.btn-group-vertical {
+	width: 100%;
+	gap: 8px;
+}
+
+.btn-group-vertical > .btn,
+.btn-group-vertical > form {
+	width: 100%;
+}
+
+.btn-group-vertical > .btn,
+.btn-group-vertical > form > .btn {
+	border-radius: 9px !important;
+}
+
+form {
+	margin-bottom: 18px;
+}
+
+label {
+	color: var(--navy);
+	font-weight: 700;
+}
+
+input.form-control,
+input[type="date"],
+input[type="number"],
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+	border: 1px solid #cbd5dc;
+	border-radius: 8px;
+	min-height: 42px;
+}
+
+input:focus,
+.form-control:focus {
+	border-color: var(--orange);
+	box-shadow: 0 0 0 3px rgba(217, 120, 24, 0.17);
+}
+
+.table {
+	overflow: hidden;
+	border: 1px solid var(--line);
+	border-radius: 10px;
+}
+
+.table thead th,
+.table tr:first-child th {
+	background: #eef2f4;
+	border-color: var(--line);
+	color: var(--navy);
+	font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+
+.table td,
+.table th {
+	vertical-align: middle;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+	background: #fbfcfd;
+}
+
+.alert {
+	border: 0;
+	border-radius: 10px;
+	font-weight: 600;
+}
+
+.img-center {
+	border-radius: 14px;
+	box-shadow: 0 10px 24px rgba(23, 33, 43, 0.12);
+}
+
+@media (max-width: 767px) {
+	header.jumbotron h1 {
+		margin: 14px 0;
+		font-size: 1.7rem;
+	}
+
+	.container > div.row > .col-sm-8 {
+		margin-top: 16px;
+		padding: 22px 18px 26px;
+	}
+
+	.row > nav.col-sm-2,
+	.row > aside.col-sm-2 {
+		padding-top: 0;
+	}
+}

@@ -10,10 +10,11 @@ if (isset($_POST['logout'])) { Security::logout(); }
     <head>
         <title>GMAC Timekeeping System</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" shrink-to-fit="no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -40,15 +41,22 @@ if (isset($_POST['logout'])) { Security::logout(); }
         $reportLabels = [
             'daily' => 'Daily Report',
             'weekly' => 'Weekly Report',
-            'monthly' => 'Monthly Report'
+            'monthly' => 'Monthly Report',
+            'specific_date' => 'Specific Date',
+            'student' => 'Student Report'
         ];
+        $reportDate = $_GET['report_date'] ?? '';
+        $studentLastName = $_GET['studentLastName'] ?? '';
         $reportRows = [];
         $reportError = '';
         if (isset($reportLabels[$report])) {
             try {
-                $reportRows = ReportsController::getTimeReport($report);
+                $filterValue = $report === 'specific_date' ? $reportDate : $studentLastName;
+                $reportRows = ReportsController::getTimeReport($report, $filterValue);
             } catch (Exception $e) {
-                $reportError = 'The requested time report could not be retrieved.';
+                $reportError = $e instanceof InvalidArgumentException
+                    ? $e->getMessage()
+                    : 'The requested time report could not be retrieved.';
             }
         }
         ?>
@@ -56,6 +64,20 @@ if (isset($_POST['logout'])) { Security::logout(); }
             <button type="submit" name="report" value="daily" class="btn btn-primary">Daily Report</button>
             <button type="submit" name="report" value="weekly" class="btn btn-primary">Weekly Report</button>
             <button type="submit" name="report" value="monthly" class="btn btn-primary">Monthly Report</button>
+        </form>
+        <form method="get" action="TimeReports.php" class="text-center mb-3">
+            <input type="hidden" name="report" value="specific_date">
+            <label for="report_date">Specific Date:</label>
+            <input type="date" id="report_date" name="report_date"
+                value="<?php echo htmlspecialchars($reportDate, ENT_QUOTES); ?>" required>
+            <button type="submit" class="btn btn-primary">Specific Date</button>
+        </form>
+        <form method="get" action="TimeReports.php" class="text-center mb-3">
+            <input type="hidden" name="report" value="student" >
+            <label for="studentLastName">Last Name:</label>
+            <input type="text" id="studentLastName" name="studentLastName" placeholder="Students Last Name"
+                value="<?php echo htmlspecialchars($studentLastName, ENT_QUOTES); ?>" required>
+            <button type="submit" class="btn btn-primary">Student Report</button>
         </form>
         <?php if (isset($reportLabels[$report])): ?>
             <h3 class="text-center"><?php echo $reportLabels[$report]; ?></h3>

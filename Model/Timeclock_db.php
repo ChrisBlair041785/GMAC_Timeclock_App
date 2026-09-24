@@ -3,7 +3,17 @@ require_once __DIR__ . "/database.php";
 
 class Timeclock_DB {
 
-    public static function getStudentStatuses() {
+    public static function getStudentStatuses($sort = 'lastname') {
+        $sortColumns = [
+            'id' => 's.StudID',
+            'lastname' => 's.LastName',
+            'firstname' => 's.FirstName',
+            'school' => 's.School'
+        ];
+        if (!isset($sortColumns[$sort])) {
+            return false;
+        }
+
         $db = new Database();
         $conn = $db->getDBConn();
         $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School,
@@ -22,7 +32,7 @@ class Timeclock_DB {
                   FROM Students s
                   LEFT JOIN timeclock t ON t.StudID = s.StudID
                   GROUP BY s.StudID, s.LastName, s.FirstName, s.School
-                  ORDER BY s.LastName ASC";
+                  ORDER BY {$sortColumns[$sort]} ASC";
         $result = mysqli_query($conn, $query);
         if (!$result) {
             return false;

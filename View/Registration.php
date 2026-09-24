@@ -16,6 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_POST['Password2'] ?? ''
     );
     $success = empty($errors);
+    if ($success) {
+        header('Refresh: 5; URL=Homepage.php');
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -24,12 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <title>GMAC Timekeeping System</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" shrink-to-fit="no">
-        <?php if ($success): ?>
-        <meta http-equiv="refresh" content="5;url=Homepage.php">
-        <?php endif; ?>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
         <script>
             function checked() {
                 const password1 = document.getElementById('password1').value;
@@ -67,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2 class="text-center">Login Registration</h2>
             <?php if ($success): ?>
                 <div class="alert alert-success" role="alert">
-                    Registration completed successfully. Returning to the homepage in 5 seconds...
+                    Registration completed successfully. Navigating to the homepage in 5 seconds...
                 </div>
             <?php elseif ($errors): ?>
                 <div class="alert alert-danger" role="alert">

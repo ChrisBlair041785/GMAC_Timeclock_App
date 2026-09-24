@@ -25,69 +25,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
             <header class="jumbotron text-center row"
-            style="margin-bottom:2px; background: linear-gradient(white, #e68a00); padding:20px;">
-            <div class="col-sm-2">
-               <img class="img-fluid float-left" style="width:100px; height:100px;" src="../GMAC Logo.png" alt="Logo">
-           </div>
-           <div class="col-sm-8">
-               <h1 class="font-bold" style="text-align:center";>GMAC - Timekeeping System</h1>    
-           </div>
-       </header>
-       <div class="row" style="padding-left: 0px;">
-        <nav class="col-sm-2">
-            <ul class="nav nav-pills flex-column">
-                <?php include('../controller/nav.php'); ?>
-            </ul>
-        </nav>
-        <div class="col-sm-8">
+                style="margin-bottom:2px; background: linear-gradient(white, #e68a00); padding:20px;">
+                <div class="col-sm-2">
+                    <img class="img-fluid float-left" style="width:100px; height:100px;" src="../GMAC Logo.png" alt="Logo">
+                </div>
+                <div class="col-sm-8">
+                    <h1 class="font-bold" style="text-align:center";>GMAC - Timekeeping System</h1>    
+                </div>
+            </header>
+            <div class="row" style="padding-left: 0px;">
+                <nav class="col-sm-2">
+                    <ul class="nav nav-pills flex-column">
+                        <?php include('../controller/nav.php'); ?>
+                    </ul>
+                </nav>
+            <div class="col-sm-8">
             <h2 class="text-center">Student Registration</h2>
             <?php if ($success): ?>
-                <div class="alert alert-success" role="alert">
-                    Student added successfully. Returning to Student Management in 5 seconds...
-                </div>
+            <div class="alert alert-success" role="alert">
+                Student added successfully. Returning to Student Management in 5 seconds...
+            </div>
             <?php elseif ($errors): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?php echo htmlspecialchars(implode(' ', $errors), ENT_QUOTES, 'UTF-8'); ?>
-                </div>
+            <div class="alert alert-danger" role="alert">
+                <?php echo htmlspecialchars(implode(' ', $errors), ENT_QUOTES, 'UTF-8'); ?>
+            </div>
             <?php endif; ?>
             <form action="Add_Student.php" method="POST">
-            <div class="form-group row">
-                <label for="LastName" class="col-sm-4 col-form-label">Last Name:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="LastName" name="LastName" 
-                        placeholder="Last Name" maxlength="30" required 
-                        value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>">
+                <div class="form-group row">
+                    <label for="LastName" class="col-sm-4 col-form-label">Last Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="LastName" name="LastName" 
+                            placeholder="Last Name" maxlength="30" required 
+                            value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="FirstName" class="col-sm-4 col-form-label">First Name:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="FirstName" name="FirstName" 
-                        placeholder="First Name" maxlength="25" required 
-                        value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>">
+                <div class="form-group row">
+                    <label for="FirstName" class="col-sm-4 col-form-label">First Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" 
+                            placeholder="First Name" maxlength="25" required 
+                            value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="School" class="col-sm-4 col-form-label">School:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="School" name="School" 
-                        placeholder="School" maxlength="50" required 
-                        value="<?php echo htmlspecialchars($school, ENT_QUOTES, 'UTF-8'); ?>">
+                <div class="form-group row">
+                    <label for="School" class="col-sm-4 col-form-label">School:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="School" name="School" 
+                            placeholder="School" maxlength="50" required 
+                            value="<?php echo htmlspecialchars($school, ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-12">
-                    <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Submit">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Submit">
+                    </div>
                 </div>
-            </div>
             </form>
+        </div>
         <aside class="col-sm-2">
             <?php include('../controller/user_buttons.php'); ?>
         </aside>
-    </div>
+        </div>
     </body>
 </html>

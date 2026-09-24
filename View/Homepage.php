@@ -13,6 +13,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
 <body>
     <div class="container" style="margin-top: 30px">
@@ -32,7 +33,9 @@ if (isset($_POST['logout'])) { Security::logout(); }
             </ul>
         </nav>
         <div class="col-sm-8">
-            <p>Welcome to the GMAC Timekeeping system. Please use the navigation menu to access different sections of the system.</p>
+            <p>Welcome to the GMAC Student Timekeeping system. The navigation menu can be used to access different sections 
+                for which you have access within the system.</p>
+            <img class="img-center" src="../GMAC Falls pic.jpg" alt="GMAC Waterfall picture"; style="width:100%; height:auto;">
         </div>
         <aside class="col-sm-2">
             <?php include('../controller/User_Buttons.php'); ?>

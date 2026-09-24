@@ -4,6 +4,7 @@ require_once('../Utility/Security.php');
 require_once('../Controller/Login_Controller.php');
 if (isset($_POST['logout'])) { Security::logout(); }
 ?>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>GMAC Timekeeping System</title>
@@ -12,6 +13,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -33,9 +35,9 @@ if (isset($_POST['logout'])) { Security::logout(); }
                 <div class="col-sm-8">
                     <h2 class="h2 text-center">Login</h2>
                     <form method='POST'>
-                        <h3>Login (email): <input type='text' name='email'></h3>
-                        <h3>Password: <input type='password' name='password'></h3>
-                        <input type='submit' value='Login' name='login'>
+                        <h3 class="text-center">Login: <input type='text' name='email' placeholder='Email'></h3>
+                        <h3 class="text-center">Password: <input type='password' name='password'></h3>
+                        <input class="btn btn-primary btn-center d-block mx-auto" type='submit' value='Login' name='login'>
                     </form>
                     <?php
                         if (isset($_POST['login'])) {

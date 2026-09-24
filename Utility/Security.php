@@ -1,9 +1,15 @@
 <?php
+require_once __DIR__ . "/../Model/AuthLog_db.php";
 
 class Security {
     
     public static function logout() { 
-        unset($_SESSION);
+        AuthLog_DB::record(
+            'logout',
+            $_SESSION['email'] ?? null,
+            $_SESSION['access'] ?? null
+        );
+        $_SESSION = [];
         unset($_POST);
         $_SESSION['logout_msg'] = 'You have been logged out.';
         header('Location: ../View/Login.php');

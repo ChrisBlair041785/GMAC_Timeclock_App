@@ -14,6 +14,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -34,10 +35,18 @@ if (isset($_POST['logout'])) { Security::logout(); }
         </nav>
         <div class="col-sm-8">
         <h2 class="text-center">Daily Time Clock-In/Out</h2>
+        <p class="text-center">Sort students by:</p>
+        <form method="get" action="Timeclock.php" class="text-center mb-3">
+            <button type="submit" name="sort" value="id" class="btn btn-primary">Student ID</button>
+            <button type="submit" name="sort" value="lastname" class="btn btn-primary">Last Name</button>
+            <button type="submit" name="sort" value="firstname" class="btn btn-primary">First Name</button>
+            <button type="submit" name="sort" value="school" class="btn btn-primary">School</button>
+        </form>
         <p class="text-center">Please use the buttons below to clock in or out the studentsfor the day.</p>
         <?php
+        $sort = $_GET['sort'] ?? 'lastname';
         try {
-                $students = TimeclockController::getStudentStatuses();
+                $students = TimeclockController::getStudentStatuses($sort);
                 if ($students) {
                     echo '<table class="table table-striped"> 
                             <tr>
@@ -75,7 +84,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         } catch (Exception $e) {
             echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';
         }
-                ?>
+        ?>
         </div>
         <aside class="col-sm-2">
             <?php include('../Controller/User_Buttons.php'); ?>

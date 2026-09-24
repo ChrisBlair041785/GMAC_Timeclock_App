@@ -14,6 +14,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -34,6 +35,8 @@ if (isset($_POST['logout'])) { Security::logout(); }
         </nav>
         <div class="col-sm-8">
         <h2 class="text-center">User Management</h2>
+        <button class='btn btn-primary btn-center d-block mx-auto' name='log_report' value='View Log Report' 
+            onclick='window.location.href="Log_Report.php"'>View Log Report</button>
         <p>
             <?php
             try{ 

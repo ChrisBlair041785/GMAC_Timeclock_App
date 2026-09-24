@@ -14,6 +14,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
+        <link rel="stylesheet" href="../Utility/style.css">
     </head>
     <body>
         <div class="container" style="margin-top: 30px">
@@ -34,7 +35,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
         </nav>
         <div class="col-sm-8">
         <h2 class="text-center">Student Management</h2>
-        <a href="Add_Student.php" class="btn btn-primary">Add New Student</a>
+        <button class="btn btn-primary btn-center d-block mx-auto" onclick="window.location.href='Add_Student.php'">Add New Student</button>
         <p>
             <?php
             try{ 
@@ -68,13 +69,10 @@ if (isset($_POST['logout'])) { Security::logout(); }
                     echo '<p class="error">No students could be retrieved.</p>'; 
                 }
             } catch (Exception $e) {
-                echo '<p class="text-center" style="color:red">An Exception occurred. Message: ' . $e->getMessage() . ' </p>';
-                echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';
-            } catch (Error $e) {
-                echo '<p class="text-center" style="color:red">An Error occurred. Message: ' . $e->getMessage() . ' </p>';
-                echo '<p class="text-center" style="color:red">The system is busy. Please try again later.</p>';
+                echo '<p class="error">Error: ' . $e->getMessage() . '</p>';
             }
-        ?>
+            ?>
+        </p>
         </div>
         <aside class="col-sm-2">
             <?php include('../Controller/User_Buttons.php'); ?>

@@ -13,7 +13,7 @@ Class User_DB {
     public static function Add_User($LastName, $FirstName, $Email, $Password) {
         $db = new Database();
         $conn = $db->getDBConn();
-        $query = "INSERT INTO users (LastName, FirstName, Email, Password) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO users (LastName, FirstName, Email, Password, access) VALUES (?, ?, ?, ?, 0)";
         $statement = mysqli_prepare($conn, $query);
         if (!$statement) {
             return false;
