@@ -17,21 +17,15 @@ class Timeclock_DB {
         $db = new Database();
         $conn = $db->getDBConn();
         $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School,
-                         CASE
-                             WHEN MAX(t.Arrived) IS NOT NULL
-                                  AND (MAX(t.Departed) IS NULL OR MAX(t.Arrived) > MAX(t.Departed))
-                             THEN MAX(t.Arrived)
-                             ELSE NULL
-                         END AS Arrived,
-                         CASE
-                             WHEN MAX(t.Departed) IS NOT NULL
-                                  AND (MAX(t.Arrived) IS NULL OR MAX(t.Departed) > MAX(t.Arrived))
-                             THEN MAX(t.Departed)
-                             ELSE NULL
-                         END AS Departed
+                         t.Arrived, t.Departed
                   FROM Students s
-                  LEFT JOIN timeclock t ON t.StudID = s.StudID
-                  GROUP BY s.StudID, s.LastName, s.FirstName, s.School
+                  LEFT JOIN timeclock t
+                    ON t.StudID = s.StudID
+                   AND t.ID = (
+                       SELECT MAX(latest.ID)
+                       FROM timeclock latest
+                       WHERE latest.StudID = s.StudID
+                   )
                   ORDER BY {$sortColumns[$sort]} ASC";
         $result = mysqli_query($conn, $query);
         if (!$result) {
