@@ -1,17 +1,44 @@
-# SDC480-Capstone-Project
-GMAC - Time Clock application 
+# Project Name: GMAC - Time Clock application
 
-Project Requirements: 
-•	The website must include at least five distinct pages.
-•	You must have a back-end database containing at least five tables.
-•	After week 1, the site must be hosted in the cloud.
-•	Elements of secure software must be implemented.
-•	Website should be accessible from any computer.
-•	All data in all tables should appear as real data, and not “jibberish.”
-•	Customers’ end-users should have the ability to search for and return data.
-•	Customers’ end-users should have the ability to register, create, and change passwords.
-•	Users’ activities should alter data – either by removing it or by adding it to your tables.
-•	Your project needs to look like a “real” website because you will want to use the project as part of your portfolio to present to employers.
+## Project Description: GMAC - Time Clock is a time keeping application designed specifically for a small afterschool program or daycare where they have the need for users and then "students" that they are keeping track of times for. The application was designed to be user intuitive and simple to operate with simple button layouts and easy to read text and tables makes this a very user friendly application for all skill levels. The application features user based access controls, so no one is accessing or changing information the should not be. Also they will be able to run reports on the students in multiple ways to give them the results they may be searching for. 
+
+## Project Tasks: 
+- **Week 1 Tasks:**
+  - Establish application framework and connect database to application
+  - Create homepage
+  - Create Add/Remove users page
+  - Add logic and CRUD functionality for Add/Remove user page
+- **Week 2 Tasks:**
+  - Create Login page
+  - Add logic and functionality for Login Page
+  - Create Clock in/out page
+- **Week 3 Tasks:**
+  - Add logic and functionality for Clock in/out page
+  - Create Reports page
+  - Add logic and functionality for Reports page
+- **Week 4 Tasks:**
+  - Add and clean up visual appearance
+  - Debug and trouble shoot application
+  - Deploy application to hosting platform  
+
+## Project Skills Learned: 
+
+## Languages Used:
+- **HTML, CSS, JavaScript** : Front-end development 
+- **PHP** : Back-end development
+- **MySQL** : Database management
+
+## Development Process Used
+- **Agile Methodology**: Emphasizing iterative development, continuous feedback, and collaboration.
+
+## Notes
+
+## Link to Project
+
+##
+
+
+
 
 Description:
 This project is for a small business to modernize the way they track clock in and clock out times for large number of kids they have in their afterschool martial arts program. Currently they track it via a notebook and paper, which leads to missed times, while also making it difficult for them to see who picks up “late” on regular basis, so they can adjust their billing for said students. 
