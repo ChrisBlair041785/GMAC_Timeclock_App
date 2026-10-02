@@ -52,7 +52,7 @@
     - admin@test.com - Pa$$word1
 
 ## Link to Project
-Github repo: 
-Video Presentation: 
+- Github repo: https://github.com/ChrisBlair041785/GMAC_Timeclock_App
+- Video Presentation: 
 
 ##
