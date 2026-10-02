@@ -2,6 +2,7 @@
 require_once __DIR__ . "/User_Controller.php";
 require_once __DIR__ . "/../Model/AuthLog_db.php";
 class LoginController {
+    // Handle the login process
     public static function handleLogin() {
         $login_msg = isset($_SESSION['logout_msg']) ? $_SESSION['logout_msg'] : ''; 
         if (isset($_POST['email']) && isset($_POST['password'])) {

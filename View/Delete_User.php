@@ -5,16 +5,18 @@ require_once('../Utility/Security.php');
 Security::checkAuthority([2]);
 if (isset($_POST['logout'])) { Security::logout(); }
 
+$message = '';
+$error = '';
+$deleted = false;
+
+// Get the user ID from GET or POST request
 $ID = filter_input(INPUT_GET, 'ID', FILTER_VALIDATE_INT);
 if (!$ID) {
     $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT);
 }
-
-$message = '';
-$error = '';
-$deleted = false;
 $user = $ID ? UserController::getUserByID($ID) : null;
 
+// Check if the user exists and handle deletion logic
 if (!$ID || !$user) {
     $error = 'This page has been accessed in error.';
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,6 +32,7 @@ if (!$ID || !$user) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -70,6 +73,11 @@ if (!$ID || !$user) {
                     <?php elseif ($deleted): ?>
                         <h3 class="text-center">The record has been deleted.</h3>
                         <p class="text-center">Returning to User Management in 5 seconds...</p>
+                        <script>
+                            setTimeout(function() {
+                                window.location.href = "UserManagement.php";
+                            }, 5000);
+                        </script>
                     <?php elseif ($message): ?>
                         <h3 class="text-center"> <?php echo htmlspecialchars($message, ENT_QUOTES); ?> </h3>
                         <p class="text-center">Returning to User Management in 5 seconds...</p>

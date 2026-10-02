@@ -1,9 +1,10 @@
 <?php 
 session_start();
-require_once('../Utility/Security.php');
-require_once('../Controller/Login_Controller.php');
+require_once(__DIR__ . '/../Utility/Security.php');
+require_once(__DIR__ . '/../Controller/Login_Controller.php');
 if (isset($_POST['logout'])) { Security::logout(); }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,7 +30,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
             <div class="row" style="padding-left: 0px;">
                 <nav class="col-sm-2">
                     <ul class="nav nav-pills flex-column">
-                        <?php include('../controller/nav.php'); ?>
+                        <?php include(__DIR__ . '/../controller/nav.php'); ?>
                     </ul>
                 </nav>
                 <div class="col-sm-8">
@@ -47,7 +48,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
                     <h2><?php if (isset($login_msg)) { echo "<p style='color:red;'>$login_msg</p>"; } ?></h2>    
                 </div>
                 <aside class="col-sm-2">
-                    <?php include('../Controller/User_Buttons.php'); ?>
+                    <?php include(__DIR__ . '/../Controller/User_Buttons.php'); ?>
                 </aside>
             </div>
         </div>

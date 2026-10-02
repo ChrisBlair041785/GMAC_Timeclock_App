@@ -11,11 +11,13 @@ $school = $_POST['School'] ?? '';
 $errors = [];
 $success = false;
 
+// Handle form submission for adding a new student
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = StudentController::AddStudentDB($firstName, $lastName, $school);
     $success = empty($errors);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

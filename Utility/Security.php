@@ -2,7 +2,7 @@
 require_once __DIR__ . "/../Model/AuthLog_db.php";
 
 class Security {
-    
+    // Handles user authentication and authorization related security functions
     public static function logout() { 
         AuthLog_DB::record(
             'logout',
@@ -15,7 +15,7 @@ class Security {
         header('Location: ../View/Login.php');
         exit();
     }
-
+    // Checks if the current user has the required authority
     public static function checkAuthority($auth) {
         $authorities = is_array($auth) ? $auth : [$auth];
         $authorized = false;
@@ -39,5 +39,4 @@ class Security {
             exit();
         }
     }
-
 }

@@ -7,6 +7,7 @@ $email = $_POST['Email'] ?? '';
 $errors = [];
 $success = false;
 
+// Handle form submission for user registration
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = UserController::registerUser(
         $firstName,
@@ -21,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -69,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($success): ?>
                 <div class="alert alert-success" role="alert">
                     Registration completed successfully. Navigating to the homepage in 5 seconds...
+                    <script>
+                        setTimeout(function() { window.location.href = "Homepage.php"; }, 5000);
+                    </script>
                 </div>
             <?php elseif ($errors): ?>
                 <div class="alert alert-danger" role="alert">
@@ -80,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="FirstName" class="col-sm-4 col-form-label">First Name:</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="FirstName" name="FirstName" 
-                        placeholder="First Name" maxlength="25" required 
+                        placeholder="First Name" minlength="2" maxlength="25" required 
                         value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
@@ -88,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="LastName" class="col-sm-4 col-form-label">Last Name:</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="LastName" name="LastName" 
-                        placeholder="Last Name" maxlength="30" required 
+                        placeholder="Last Name" minlength="2" maxlength="30" required 
                         value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
@@ -104,18 +109,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="Password1" class="col-sm-4 col-form-label">Password:</label>
                 <div class="col-sm-8">
                     <input type="password" class="form-control" id="password1" name="Password1" 
-                        placeholder="Password" minlength="8" maxlength="16" required 
-                        >
-                        <span id="message">Between 8 and 16 characters</span>
+                        placeholder="Password" minlength="8" maxlength="20" required
+                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}"
+                        title="Must be 8-20 characters and include an uppercase letter, 
+                        a lowercase letter, a number, and a special character">
+                        <span id="message">Between 8 and 20 characters, must include one uppercase letter, 
+                            one lowercase letter, one number, and a special character</span>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="Password2" class="col-sm-4 col-form-label">Confirm Password:</label>
                 <div class="col-sm-8">
                     <input type="password" class="form-control" id="password2" name="Password2" 
-                        placeholder="Confirm Password" minlength="8" maxlength="16" required 
-                        >
-                        <span id="message">Between 8 and 16 characters</span>
+                        placeholder="Confirm Password" minlength="8" maxlength="20" required
+                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}"
+                        title="Must be 8-20 characters and include an uppercase letter, 
+                        a lowercase letter, a number, and a special character">
+                        <span id="message2">Between 8 and 20 characters, must include one uppercase letter, 
+                            one lowercase letter, one number, and a special character</span>
                 </div>
             </div>     
             <div class="form-group row">

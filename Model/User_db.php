@@ -1,15 +1,15 @@
 <?php 
 require_once __DIR__ . "/database.php"; 
 Class User_DB {
-
+    // Handles database operations related to the User entity
     public static function All_Users() {
         $db = new Database();
         $conn = $db->getDBConn();
-        $query = "SELECT * FROM users ORDER BY LastName ASC";
+        $query = "SELECT u.*, l.access_name FROM users u INNER JOIN user_levels l ON u.access = l.access ORDER BY LastName ASC";
         $results = mysqli_query($conn, $query);
         return $results;
     }
-
+    // Retrieves all user records from the database, ordered by last name
     public static function Add_User($LastName, $FirstName, $Email, $Password) {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -24,12 +24,15 @@ Class User_DB {
         mysqli_stmt_close($statement);
         return $added;
     }
-
+    // Adds a new user record to the database with default access level 0
     public static function Get_User_By_ID($ID) {
         $db = new Database();
         $conn = $db->getDBConn();
-        $query = "SELECT * FROM users WHERE ID = ?";
+        $query = "SELECT u.*, l.access_name FROM users u INNER JOIN user_levels l ON u.access = l.access WHERE u.ID = ?";
         $statement = mysqli_prepare($conn, $query);
+        if (!$statement) {
+            return null;
+        }
         mysqli_stmt_bind_param($statement, "i", $ID);
         mysqli_stmt_execute($statement);
         $result = mysqli_stmt_get_result($statement);
@@ -37,12 +40,15 @@ Class User_DB {
         mysqli_stmt_close($statement);
         return $user;
     }
-
+    // Retrieves a user record by its email from the database
     public static function Get_User_By_Email($Email) {
         $db = new Database();
         $conn = $db->getDBConn();
-        $query = "SELECT * FROM users WHERE Email = ?";
+        $query = "SELECT u.*, l.access_name FROM users u INNER JOIN user_levels l ON u.access = l.access WHERE u.Email = ?";
         $statement = mysqli_prepare($conn, $query);
+        if (!$statement) {
+            return null;
+        }
         mysqli_stmt_bind_param($statement, "s", $Email);
         mysqli_stmt_execute($statement);
         $result = mysqli_stmt_get_result($statement);
@@ -50,7 +56,7 @@ Class User_DB {
         mysqli_stmt_close($statement);
         return $user;
     }
-
+    // Checks if an email exists for a user other than the specified ID
     public static function Email_Exists_For_Other_User($email, $ID) {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -63,19 +69,22 @@ Class User_DB {
         mysqli_stmt_close($statement);
         return $exists;
     }
-
+    // Updates the details of a user record in the database
     public static function Update_User_Details($ID, $FirstName, $LastName, $Email, $access) {
         $db = new Database();
         $conn = $db->getDBConn();
         $query = "UPDATE users SET FirstName = ?, LastName = ?, Email = ?, access = ? WHERE ID = ? LIMIT 1";
         $statement = mysqli_prepare($conn, $query);
+        if (!$statement) {
+            return false;
+        }
         mysqli_stmt_bind_param($statement, "sssii", $FirstName, $LastName, $Email, $access, $ID);
         mysqli_stmt_execute($statement);
         $updated = mysqli_stmt_affected_rows($statement) >= 0;
         mysqli_stmt_close($statement);
         return $updated;
     }
-
+    // Updates the password of a user record in the database
     public static function Update_User_Password($Email, $Password) {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -90,12 +99,15 @@ Class User_DB {
         mysqli_stmt_close($statement);
         return $updated;
     }
-
+    // Deletes a user record from the database by its ID
     public static  function Delete_User($ID) {
         $db = new Database();
         $conn = $db->getDBConn();
         $query = "DELETE FROM users WHERE ID = ? LIMIT 1";
         $statement = mysqli_prepare($conn, $query);
+        if (!$statement) {
+            return false;
+        }
         mysqli_stmt_bind_param($statement, "i", $ID);
         mysqli_stmt_execute($statement);
         $deleted = mysqli_stmt_affected_rows($statement) === 1;

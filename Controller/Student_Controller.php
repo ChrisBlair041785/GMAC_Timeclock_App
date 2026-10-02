@@ -3,13 +3,14 @@ require_once __DIR__ . "/../Model/student_db.php";
 require_once __DIR__ . "/../Model/Student.php";
 
 class StudentController {
-
+    // Convert a database row to a Student object
     private static function rowToStudent($row) {
         $student = new Student($row['FirstName'], $row['LastName'],
             $row['School'], $row['StudID']);
         return $student;
     }
 
+    // Get all students from the database
     public static function getAllStudents() {
         $studentdb = new Student_DB(); 
         $results = $studentdb->All_Students();
@@ -23,6 +24,7 @@ class StudentController {
         return $students;
     }
 
+    // Get a student by their ID
     public static function getStudentByID($StudID) {
         $studentdb = new Student_DB();
         $row = $studentdb->Get_Student_By_ID($StudID);
@@ -33,6 +35,7 @@ class StudentController {
         return null;
     }
 
+    // Add a new student to the database
     public static function AddStudentDB($FirstName, $LastName, $School) {
         $errors = [];
         $FirstName = trim(filter_var($FirstName, FILTER_SANITIZE_STRING));
@@ -51,6 +54,7 @@ class StudentController {
         return [];
     }
 
+    // Update an existing student's information
     public static function updateStudent($StudID, $FirstName, $LastName, $School) {
         $errors = [];
         $FirstName = trim(filter_var($FirstName, FILTER_SANITIZE_STRING));
@@ -69,6 +73,7 @@ class StudentController {
         return [];
     }
 
+    // Delete a student from the database
     public static function deleteStudent($StudID) {
         $studentdb = new Student_db();
         return $studentdb->Delete_Student($StudID);

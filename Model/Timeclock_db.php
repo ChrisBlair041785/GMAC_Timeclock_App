@@ -2,7 +2,8 @@
 require_once __DIR__ . "/database.php";
 
 class Timeclock_DB {
-
+    // Handles database operations related to the Timeclock entity
+    // Retrieves the statuses of all students, optionally sorted by a specified column
     public static function getStudentStatuses($sort = 'lastname') {
         $sortColumns = [
             'id' => 's.StudID',
@@ -13,7 +14,6 @@ class Timeclock_DB {
         if (!isset($sortColumns[$sort])) {
             return false;
         }
-
         $db = new Database();
         $conn = $db->getDBConn();
         $query = "SELECT s.StudID, s.LastName, s.FirstName, s.School,
@@ -31,7 +31,6 @@ class Timeclock_DB {
         if (!$result) {
             return false;
         }
-
         $students = [];
         while ($row = mysqli_fetch_assoc($result)) {
             $students[] = $row;
@@ -39,7 +38,7 @@ class Timeclock_DB {
         mysqli_free_result($result);
         return $students;
     }
-
+    // Records a clock-in or clock-out action for a student in the timeclock table
     public static function recordAction($ID, $action) {
         $db = new Database();
         $conn = $db->getDBConn();

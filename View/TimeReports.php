@@ -5,6 +5,7 @@ require_once('../Utility/Security.php');
 Security::checkAuthority([1, 2]);
 if (isset($_POST['logout'])) { Security::logout(); }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -43,15 +44,27 @@ if (isset($_POST['logout'])) { Security::logout(); }
             'weekly' => 'Weekly Report',
             'monthly' => 'Monthly Report',
             'specific_date' => 'Specific Date',
-            'student' => 'Student Report'
+            'student' => 'Student Report',
+            'date_range' => 'Date Range Report'
         ];
         $reportDate = $_GET['report_date'] ?? '';
         $studentLastName = $_GET['studentLastName'] ?? '';
+        $startDate = $_GET['start_date'] ?? '';
+        $endDate = $_GET['end_date'] ?? '';
         $reportRows = [];
         $reportError = '';
         if (isset($reportLabels[$report])) {
             try {
-                $filterValue = $report === 'specific_date' ? $reportDate : $studentLastName;
+                $filterValue = null;
+                $startDate = $_GET['start_date'] ?? '';
+                $endDate = $_GET['end_date'] ?? '';
+                if ($report === 'specific_date') {
+                    $filterValue = $reportDate;
+                } elseif ($report === 'date_range') {
+                    $filterValue = [$startDate, $endDate];
+                } elseif ($report === 'student') {
+                    $filterValue = $studentLastName;
+                }
                 $reportRows = ReportsController::getTimeReport($report, $filterValue);
             } catch (Exception $e) {
                 $reportError = $e instanceof InvalidArgumentException
@@ -71,6 +84,16 @@ if (isset($_POST['logout'])) { Security::logout(); }
             <input type="date" id="report_date" name="report_date"
                 value="<?php echo htmlspecialchars($reportDate, ENT_QUOTES); ?>" required>
             <button type="submit" class="btn btn-primary">Specific Date</button>
+        </form>
+        <form method="get" action="TimeReports.php" class="text-center mb-3">
+            <input type="hidden" name="report" value="date_range">
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date"
+                value="<?php echo htmlspecialchars($startDate, ENT_QUOTES); ?>" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date"
+                value="<?php echo htmlspecialchars($endDate, ENT_QUOTES); ?>" required>
+            <button type="submit" class="btn btn-primary">Date Range Report</button>
         </form>
         <form method="get" action="TimeReports.php" class="text-center mb-3">
             <input type="hidden" name="report" value="student" >

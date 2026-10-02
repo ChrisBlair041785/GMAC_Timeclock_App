@@ -2,7 +2,7 @@
 require_once __DIR__ . "/../Model/Reports_db.php";
 
 class ReportsController {
-
+    
     public static function getTimeReport($report, $filterValue = null) {
         if ($report === 'Specific Date') {
             $report = 'specific_date';
@@ -14,6 +14,22 @@ class ReportsController {
             $date = DateTime::createFromFormat('!Y-m-d', (string) $filterValue);
             if (!$date || $date->format('Y-m-d') !== $filterValue) {
                 throw new InvalidArgumentException('Please select a valid date.');
+            }
+        }
+
+        if ($report === 'date_range') {
+            if (!is_array($filterValue) || count($filterValue) !== 2) {
+                throw new InvalidArgumentException('Please select a valid start and end date.');
+            }
+            [$startDate, $endDate] = $filterValue;
+            $start = is_string($startDate) ? DateTime::createFromFormat('!Y-m-d', $startDate) : false;
+            $end = is_string($endDate) ? DateTime::createFromFormat('!Y-m-d', $endDate) : false;
+            if (!$start || $start->format('Y-m-d') !== $startDate
+                || !$end || $end->format('Y-m-d') !== $endDate) {
+                throw new InvalidArgumentException('Please select a valid start and end date.');
+            }
+            if ($start > $end) {
+                throw new InvalidArgumentException('The start date must be on or before the end date.');
             }
         }
 

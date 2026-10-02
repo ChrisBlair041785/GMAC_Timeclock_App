@@ -2,7 +2,8 @@
 require_once __DIR__ . "/database.php";
 
 class AuthLog_DB {
-
+    // Handles database operations related to authentication logs
+    // Records an authentication event in the auth_logs table
     public static function record($eventType, $email = null, $accessLevel = null) {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -20,7 +21,7 @@ class AuthLog_DB {
         mysqli_stmt_close($statement);
         return $recorded;
     }
-
+    // Retrieves all authentication logs from the auth_logs table
     public static function getAllLogs() {
         $db = new Database();
         $conn = $db->getDBConn();

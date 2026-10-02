@@ -2,7 +2,8 @@
 require_once __DIR__ . "/database.php";
 
 class Student_DB {
-
+    // Handles database operations related to the Student entity
+    // Retrieves all student records from the database, ordered by last name
     function All_Students() { 
         $db = new Database();
         $conn = $db->getDBConn();
@@ -11,6 +12,7 @@ class Student_DB {
         return $results;
     }
 
+    // Adds a new student record to the database
     function Add_StudentDB($FirstName, $LastName, $School) { 
         $db = new Database();
         $conn = $db->getDBConn();
@@ -26,6 +28,7 @@ class Student_DB {
         return $added;
     }
 
+    // Retrieves the ID of the last inserted student record
     function Get_Last_Inserted_StudID() {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -35,6 +38,7 @@ class Student_DB {
         return $row['StudID'] ?? null;
     }
 
+    // Retrieves a student record by its ID from the database
     function Get_Student_By_ID($StudID) {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -51,6 +55,7 @@ class Student_DB {
         return $student;
     }
 
+    // Updates an existing student record in the database
     function Update_Student($StudID, $FirstName, $LastName, $School) {
         $db = new Database();
         $conn = $db->getDBConn();
@@ -66,6 +71,7 @@ class Student_DB {
         return $updated;
     }
 
+    // Deletes a student record from the database by its ID
     function Delete_Student($StudID) {
         $db = new Database();
         $conn = $db->getDBConn();

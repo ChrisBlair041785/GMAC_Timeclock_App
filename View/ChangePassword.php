@@ -8,6 +8,7 @@ if (isset($_POST['logout'])) { Security::logout(); }
 $email = $_POST['Email'] ?? '';
 $errors = [];
 $success = false;
+// Handle form submission for changing password
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = UserController::changePassword(
         $email,
@@ -89,22 +90,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="Password" class="col-sm-4 col-form-label">Current Password:</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="Password" name="Password" 
-                                placeholder="Password" minlength="8" maxlength="12" required >
+                                placeholder="Password" minlength="8" maxlength="20" required >
                         </div>
                     </div>   
                     <div class="form-group row">
                         <label for="Password1" class="col-sm-4 col-form-label">New Password:</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="password1" name="Password1" 
-                                placeholder="Password" minlength="8" maxlength="12" required >
-                            <span id="message">Between 8 and 12 characters.</span>
+                                placeholder="Password" minlength="8" maxlength="20" required
+                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}"
+                                title="Must be 8-20 characters and include an uppercase letter, 
+                                a lowercase letter, a number, and a special character">
+                            <span id="message">8-20 characters, must include one uppercase letter, 
+                                one lowercase letter, one number, and a special character.</span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="Password2" class="col-sm-4 col-form-label">Confirm Password:</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="password2" name="Password2" 
-                                placeholder="Password" minlength="8" maxlength="12" required >
+                                placeholder="Password" minlength="8" maxlength="20" required
+                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}"
+                                title="Must be 8-20 characters and include an uppercase letter, 
+                                a lowercase letter, a number, and a special character">
                         </div>
                     </div>
                     <div class="form-group row">

@@ -5,16 +5,16 @@ require_once('../Utility/Security.php');
 Security::checkAuthority([2]);
 if (isset($_POST['logout'])) { Security::logout(); }
 
-$ID = filter_input(INPUT_GET, 'ID', FILTER_VALIDATE_INT);
-if (!$ID) {
-    $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT);
-}
-
 $message = '';
 $error = '';
 $deleted = false;
+
+// Get the student ID from GET or POST request
+$ID = filter_input(INPUT_GET, 'ID', FILTER_VALIDATE_INT);
+if (!$ID) { $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT); }
 $student = $ID ? StudentController::getStudentByID($ID) : null;
 
+// Check if the student exists and handle deletion logic
 if (!$ID || !$student) {
     $error = 'This page has been accessed in error.';
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {

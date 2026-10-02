@@ -6,16 +6,18 @@ class User {
     private $Email;
     private $Password;
     private $access;
-
-    public function __construct($FirstName, $LastName, $Email, $Password, $access, $ID = null) {
+    private $access_name;
+    // Constructor for the User class
+    public function __construct($FirstName, $LastName, $Email, $Password, $access, $ID = null, $access_name = null) {
         $this->ID = $ID;
         $this->FirstName = $FirstName;
         $this->LastName = $LastName;
         $this->Email = $Email;
         $this->Password = $Password;
         $this->access = $access;
+        $this->access_name = $access_name;
     }
-
+    // Getters and setters for the User class properties
     public function getID() { return $this->ID; }
     public function setID($value) { $this->ID = $value; }
     public function getFirstName() { return $this->FirstName; }
@@ -28,4 +30,6 @@ class User {
     public function setPassword($value) { $this->Password = $value; }
     public function getAccess() { return $this->access; }
     public function setAccess($value) { $this->access = $value; }
+    public function getAccessName() { return $this->access_name; }
+    public function setAccessName($value) { $this->access_name = $value; }
 }

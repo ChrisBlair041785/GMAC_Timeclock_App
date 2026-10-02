@@ -5,13 +5,14 @@ require_once('../Utility/Security.php');
 Security::checkAuthority([2]);
 if (isset($_POST['logout'])) { Security::logout(); }
 
+// Get the student ID from GET or POST request
 $ID = filter_input(INPUT_GET, 'ID', FILTER_VALIDATE_INT);
-if (!$ID) {
-    $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT);
-}
+if (!$ID) { $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT); }
 
 $errors = [];
 $success = false;
+
+// Handle form submission for editing a student record
 if ($ID && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = StudentController::updateStudent(
         $ID,
@@ -24,6 +25,7 @@ if ($ID && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $student = $ID ? StudentController::getStudentByID($ID) : null;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -63,6 +65,11 @@ $student = $ID ? StudentController::getStudentByID($ID) : null;
                         <?php if ($success): ?>
                             <h3 class="text-center">The student has been edited successfully.</h3>
                             <p class="text-center">Returning to Student Management in 5 seconds...</p>
+                            <script>
+                                setTimeout(function() {
+                                    window.location.href = "StudentManagement.php";
+                                }, 5000);
+                            </script>
                         <?php elseif ($errors): ?>
                             <p class="text-center text-danger">
                                 The following error(s) occurred:<br>
@@ -71,7 +78,7 @@ $student = $ID ? StudentController::getStudentByID($ID) : null;
                             </p>
                         <?php endif; ?>
                         <form action="Edit_Student.php" method="post" name="editform" id="editform">
-                            <div class="form-group-row">
+                            <div class="form-group row">
                                 <label for="LastName" class="col-sm-4 col-form-label">Last Name:</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="LastName" name="LastName"
@@ -79,7 +86,7 @@ $student = $ID ? StudentController::getStudentByID($ID) : null;
                                         value="<?php echo htmlspecialchars($student->getLastName(), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                             </div>
-                            <div class="form-group-row">
+                            <div class="form-group row">
                                 <label for="FirstName" class="col-sm-4 col-form-label">First Name:</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="FirstName" name="FirstName"
@@ -87,7 +94,7 @@ $student = $ID ? StudentController::getStudentByID($ID) : null;
                                         value="<?php echo htmlspecialchars($student->getFirstName(), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                             </div>
-                            <div class="form-group-row">
+                            <div class="form-group row">
                                 <label for="School" class="col-sm-4 col-form-label">School:</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="School" name="School"
@@ -96,7 +103,7 @@ $student = $ID ? StudentController::getStudentByID($ID) : null;
                                 </div>
                             </div>
                             <input type="hidden" name="ID" value="<?php echo $ID; ?>">
-                            <div class="form-group-row">
+                            <div class="form-group row">
                                 <div class="col-sm-8">
                                     <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Save Changes">
                                 </div>

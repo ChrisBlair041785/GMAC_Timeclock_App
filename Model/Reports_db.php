@@ -2,14 +2,15 @@
 require_once __DIR__ . "/database.php";
 
 class Reports_DB {
-
+    // Handles database operations related to generating reports
+    // Generates a time report based on the specified report type and optional filter value
     public static function getTimeReport($report, $filterValue = null) {
         $filters = [
             'daily' => 'DATE(COALESCE(t.Arrived, t.Departed)) = CURDATE()',
-            'weekly' => 'YEARWEEK(COALESCE(t.Arrived, t.Departed), 1) = YEARWEEK(CURDATE(), 1)',
-            'monthly' => 'MONTH(COALESCE(t.Arrived, t.Departed)) = MONTH(CURDATE())
-                         AND YEAR(COALESCE(t.Arrived, t.Departed)) = YEAR(CURDATE())',
+            'weekly' => 'DATE(COALESCE(t.Arrived, t.Departed)) BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND CURDATE()',
+            'monthly' => 'DATE(COALESCE(t.Arrived, t.Departed)) BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE()',
             'specific_date' => 'DATE(COALESCE(t.Arrived, t.Departed)) = ?',
+            'date_range' => 'DATE(COALESCE(t.Arrived, t.Departed)) BETWEEN ? AND ?',
             'student' => 's.LastName = ?'
         ];
 
@@ -33,6 +34,9 @@ class Reports_DB {
         if (in_array($report, ['specific_date', 'student'], true)) {
             $type = 's';
             mysqli_stmt_bind_param($statement, $type, $filterValue);
+        } elseif ($report === 'date_range') {
+            $type = 'ss';
+            mysqli_stmt_bind_param($statement, $type, $filterValue[0], $filterValue[1]);
         }
 
         mysqli_stmt_execute($statement);

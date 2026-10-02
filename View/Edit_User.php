@@ -5,13 +5,14 @@ require_once('../Utility/Security.php');
 Security::checkAuthority('2');
 if (isset($_POST['logout'])) { Security::logout(); }
 
+// Get the user ID from GET or POST request
 $ID = filter_input(INPUT_GET, 'ID', FILTER_VALIDATE_INT);
-if (!$ID) {
-    $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT);
-}
+if (!$ID) { $ID = filter_input(INPUT_POST, 'ID', FILTER_VALIDATE_INT); }
 
 $errors = [];
 $success = false;
+
+// Handle form submission for editing a user record
 if ($ID && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = UserController::updateUserDetails(
         $ID,
@@ -23,8 +24,10 @@ if ($ID && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $success = empty($errors);
 }
 
+// Retrieve the user record for display in the form
 $user = $ID ? UserController::getUserByID($ID) : null;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -72,7 +75,7 @@ $user = $ID ? UserController::getUserByID($ID) : null;
                         </p>
                     <?php endif; ?>
                 <form action="edit_user.php" method="post" name="editform" id="editform">
-                <div class="form-group-row">
+                <div class="form-group row">
                     <label for="FirstName" class="col-sm-4 col-form-label">First Name:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="FirstName" name="FirstName" 
@@ -80,7 +83,7 @@ $user = $ID ? UserController::getUserByID($ID) : null;
                             value="<?php echo htmlspecialchars($user->getFirstName(), ENT_QUOTES); ?>">
                     </div>
                 </div>
-                <div class="form-group-row">
+                <div class="form-group row">
                     <label for="LastName" class="col-sm-4 col-form-label">Last Name:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="LastName" name="LastName" 
@@ -88,7 +91,7 @@ $user = $ID ? UserController::getUserByID($ID) : null;
                             value="<?php echo htmlspecialchars($user->getLastName(), ENT_QUOTES); ?>">
                     </div>
                 </div>
-                <div class="form-group-row">
+                <div class="form-group row">
                     <label for="Email" class="col-sm-4 col-form-label">Email:</label>
                     <div class="col-sm-8">
                         <input type="email" class="form-control" id="Email" name="Email" 
@@ -96,18 +99,22 @@ $user = $ID ? UserController::getUserByID($ID) : null;
                             value="<?php echo htmlspecialchars($user->getEmail(), ENT_QUOTES); ?>">
                     </div>
                 </div>
-                <div class="form-group-row">
+                <div class="form-group row">
                     <label for="Access" class="col-sm-4 col-form-label">Access Level:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="Access" name="Access" 
-                            placeholder="Access Level" maxlength="60" required 
-                            value="<?php echo htmlspecialchars($user->getAccess(), ENT_QUOTES); ?>">
+                        <?php $currentAccess = (string) $user->getAccess(); ?>
+                        <select class="form-control" id="Access" name="Access" required>
+                            <option value="0" <?php echo $currentAccess === '0' ? 'selected' : ''; ?>>New User</option>
+                            <option value="1" <?php echo $currentAccess === '1' ? 'selected' : ''; ?>>User</option>
+                            <option value="2" <?php echo $currentAccess === '2' ? 'selected' : ''; ?>>Administrator</option>
+                        </select>
                     </div>
                 </div>
                 <input type="hidden" name="ID" value="<?php echo $ID; ?>">
-                <div class="form-group-row">
+                <div class="form-group row">
                     <div class="col-sm-8">
                         <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Save Changes">
+                        <input type="button" class="btn btn-secondary" value="Cancel" onclick="window.location.href='UserManagement.php';">
                     </div>
                 </div>
                 </form>

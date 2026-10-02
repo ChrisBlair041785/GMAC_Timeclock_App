@@ -4,14 +4,14 @@ class Student {
     private $FirstName;
     private $LastName;
     private $School;
-
+    // Constructor for the Student class
     public function __construct($FirstName, $LastName, $School, $StudID = null) {
         $this->StudID = $StudID;
         $this->FirstName = $FirstName;
         $this->LastName = $LastName;
         $this->School = $School;
     }
-
+    // Getter and setter methods for the Student class properties
     public function getStudID() { return $this->StudID; }
     public function setStudID($value) { $this->StudID = $value; }
     public function getFirstName() { return $this->FirstName; }

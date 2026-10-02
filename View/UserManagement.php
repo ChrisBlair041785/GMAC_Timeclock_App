@@ -5,6 +5,7 @@ require_once('../Utility/Security.php');
 Security::checkAuthority([2]);
 if (isset($_POST['logout'])) { Security::logout(); }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -49,18 +50,21 @@ if (isset($_POST['logout'])) { Security::logout(); }
                                 <th scope="col">Last Name</th>
                                 <th scope="col">First Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Access Level</th>
                             </tr>';
                 foreach ($users as $user) {
                     $ID = htmlspecialchars($user->getID(), ENT_QUOTES);
                     $LastName = htmlspecialchars($user->getLastName(), ENT_QUOTES);
                     $FirstName = htmlspecialchars($user->getFirstName(), ENT_QUOTES);
                     $Email = htmlspecialchars($user->getEmail(), ENT_QUOTES);
+                    $access = htmlspecialchars($user->getAccessName(), ENT_QUOTES);
                     echo '<tr>
                             <td><a href="Edit_User.php?ID=' . $ID . '">Edit</a></td>
                             <td><a href="Delete_User.php?ID=' . $ID . '">Delete</a></td>
                             <td>' . $LastName . '</td>
                             <td>' . $FirstName . '</td>
                             <td>' . $Email . '</td>
+                            <td>' . $access . '</td>
                           </tr>';
                 }
                 echo '</table>';

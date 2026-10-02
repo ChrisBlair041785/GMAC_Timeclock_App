@@ -4,6 +4,7 @@ require_once('../Utility/Security.php');
 Security::checkAuthority([0, 1, 2]);
 if (isset($_POST['logout'])) { Security::logout(); }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
