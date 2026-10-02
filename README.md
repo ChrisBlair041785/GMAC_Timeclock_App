@@ -44,6 +44,8 @@
 - **Agile Methodology**: Emphasizing iterative development, continuous feedback, and collaboration.
 
 ## Notes
+- The demo database for this application can be found in the sql folder. 
+    - import the file into your PHPMyAdmin and it will set up the database for the application 
 - Demo user logins to see what each user level can access
     - new@test.com - Password
     - user@test.com - Pa$$word1
