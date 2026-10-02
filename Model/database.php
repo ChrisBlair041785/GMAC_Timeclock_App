@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host ="localhost";
-    private $dbname = "SDC480_course_project";
+    private $dbname = "gmac_timeclock_db";
     private $username = "ecpi_user"; 
     private $password = "Password1"; 
 
